@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DataService } from '../data.service';
 import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-diseases',
   templateUrl: './diseases.component.html',
-  styleUrls: ['./diseases.component.scss']
+  styleUrls: ['./diseases.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DiseasesComponent {
 
