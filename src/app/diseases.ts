@@ -1,4 +1,4 @@
-export const list = [
+export const ListOfDiseases = [
   13018,
   5658,
   13390,

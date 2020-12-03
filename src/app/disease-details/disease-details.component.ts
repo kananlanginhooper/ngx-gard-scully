@@ -10,7 +10,7 @@ import { DataService } from '../data.service';
 })
 export class DiseaseDetailsComponent {
 
-  data = {};
+  data = { mainPropery: null };
 
   constructor(dataSrv: DataService, route: ActivatedRoute) {
     dataSrv.getById(route.snapshot.paramMap.get('id')).pipe(take(1)).subscribe(x => this.data = x);

@@ -25,6 +25,7 @@
     "@scullyio/ng-lib": "^1.0.0",
     "@scullyio/scully": "^1.0.0",
     "bootstrap": "^4.5.3",
+    "express-serve-static-core": "^0.1.1",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

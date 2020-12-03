@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { list } from './diseases';
+import { ListOfDiseases } from './diseases';
 import { of } from 'rxjs';
 
 @Injectable({
@@ -12,11 +12,11 @@ export class DataService {
   }
 
   getAll() {
-    return of(list)
+    return of(ListOfDiseases)
   }
 
   getById(id: string | number) {
-    return this.client.get(`/assets/json/disease${id.toString()}.json`);
+    return this.client.get<any>(`/assets/json/disease${id.toString()}.json`);
   }
 
 }
