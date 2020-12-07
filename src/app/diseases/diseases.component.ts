@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { DataService } from '../data.service';
 import { take } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-diseases',
@@ -10,11 +11,16 @@ import { take } from 'rxjs/operators';
 })
 export class DiseasesComponent {
 
-  data: number[] = [];
+  data = [];
 
   constructor(dataSrv: DataService) {
-    dataSrv.getAll().pipe(take(1)).subscribe(d => this.data = d)
+    dataSrv.getAll().pipe(take(1)).subscribe(ids => {
+
+      // for demo ids are converted to titles // todo:
+      const proms = ids.map(i => dataSrv.getById(i));
+      forkJoin(proms).pipe(take(1)).subscribe(rsp => {
+        this.data = rsp.map(s => ({ id: s.mainPropery.diseaseId, title: s.mainPropery.diseaseName }));
+      });
+    });
   }
-
-
 }

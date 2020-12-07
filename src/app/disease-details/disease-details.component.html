@@ -1,37 +1,70 @@
-<main role="main" *ngIf="data && data.mainPropery" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-    <div
-        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Disease # {{data.mainPropery.diseaseId}} - {{data.mainPropery.diseaseName}}</h1>
+<div class="row">
+    <div class="col-md-3">
+        <nav>
+            <div class="sidebar-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" routerLink="/diseases" routerLinkActive="active"> Browse A-Z </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/diseases" routerLinkActive="active">
+                            Find Diseases By Category
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/diseases" routerLinkActive="active">
+                            List of FDA Orphan Drugs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/diseases" routerLinkActive="active">
+                            GARD Information Navigator
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/diseases" routerLinkActive="active">
+                            FAQs About Rare Diseases
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </div>
-
-    <div>
-        <p><b>Other Names: </b>{{data.mainPropery.synonyms.join(', ')}}</p>
-        <p><b>Categories: </b> <span *ngFor="let sym of data.diseaseCategories"> {{sym.diseaseTypeName}}</span>
-        </p>
-        <p><b>This disease is grouped under: </b>{{data.relatedDiseases[0]?.relatedDiseaseName}}</p>
-        <p><b>Summary: </b>
-            <span [innerHTML]="data.overviewQuestion?.answerText"></span>
-        </p>
-
-        <div><b>Organizations: </b>
-            <ul>
-                <li *ngFor="let org of data.organizations">
-                    <span><a href="org.url">{{org.resourceName}}</a></span><br>
-                    <ng-container *ngIf="org.address1">
-                        <span>{{org.address1}}</span><br>
-                        <span>{{org.city}} {{org.state}}, {{org.zip}}</span><br>
-                    </ng-container>
-                </li>
-            </ul>
+    <main role="main" *ngIf="data && data.mainPropery" class="col-md-9">
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Disease # {{data.mainPropery.diseaseId}} - {{data.mainPropery.diseaseName}}</h1>
         </div>
 
-        <div><b>Learn More</b>
-            <ul>
-                <li *ngFor="let info of data['resource descriptions']">
-                    <span [innerHTML]="info.descriptionText"></span>
-                </li>
-            </ul>
-        </div>
-    </div>
+        <div>
+            <p><b>Other Names: </b>{{data.mainPropery.synonyms.join(', ')}}</p>
+            <p><b>Categories: </b> <span *ngFor="let sym of data.diseaseCategories"> {{sym.diseaseTypeName}}</span>
+            </p>
+            <p><b>This disease is grouped under: </b>{{data.relatedDiseases[0]?.relatedDiseaseName}}</p>
+            <p><b>Summary: </b>
+                <span [innerHTML]="data.overviewQuestion?.answerText"></span>
+            </p>
 
-</main>
+            <div><b>Organizations: </b>
+                <ul>
+                    <li *ngFor="let org of data.organizations">
+                        <span><a href="org.url">{{org.resourceName}}</a></span><br>
+                        <ng-container *ngIf="org.address1">
+                            <span>{{org.address1}}</span><br>
+                            <span>{{org.city}} {{org.state}}, {{org.zip}}</span><br>
+                        </ng-container>
+                    </li>
+                </ul>
+            </div>
+
+            <div><b>Learn More</b>
+                <ul>
+                    <li *ngFor="let info of data['resource descriptions']">
+                        <span [innerHTML]="info.descriptionText"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+</div>
