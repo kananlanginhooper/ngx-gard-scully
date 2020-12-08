@@ -33,8 +33,7 @@
               "src/styles.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.css"
             ],
-            "scripts": [
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -127,6 +126,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ngx-gard-skully"
+    }
+  },
+  "defaultProject": "ngx-gard-skully",
+  "cli": {
+    "analytics": "bfe7e44c-2de5-440b-bff1-4927e867fe0d"
+  }
 }
