@@ -11,6 +11,8 @@ import { DiseasesComponent } from './diseases/diseases.component';
 import { DiseaseDetailsComponent } from './disease-details/disease-details.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SearchResultsComponent } from './search-results/search-results.component';
 
 @NgModule({
   declarations: [
@@ -19,16 +21,18 @@ import { HttpClientModule } from '@angular/common/http';
     HelpComponent,
     GlossaryComponent,
     DiseasesComponent,
-    DiseaseDetailsComponent
+    DiseaseDetailsComponent,
+    SearchResultsComponent,
   ],
   imports: [
     BrowserModule,
     CommonModule,
     HttpClientModule,
     AppRoutingModule,
-    ScullyLibModule
+    ScullyLibModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,74 +1,120 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <span class="shrink-width">
-        <ul class="navbar-nav px-3 list-inline">
-            <li class="nav-item text-nowrap list-inline-item">
-                <span class="nav-link" href="#">U.S. Department of Health & Human Services <span class="splitter"> >
-                    </span>
-                    National Institutes of Health <span class="splitter"> > </span> NCATS</span>
-            </li>
-        </ul>
-    </span>
+  <span class="shrink-width">
+    <ul class="navbar-nav px-3 list-inline">
+      <li class="nav-item text-nowrap list-inline-item">
+        <span class="nav-link" href="#"
+          >U.S. Department of Health & Human Services
+          <span class="splitter"> > </span> National Institutes of Health
+          <span class="splitter"> > </span> NCATS</span
+        >
+      </li>
+    </ul>
+  </span>
 </nav>
 
 <div class="shrink-width">
+  <div class="nav-scroller bg-white shadow-sm justify-content-center">
+    <nav class="nav nav-underline">
+      <a class="nav-link" routerLink="/diseases" routerLinkActive="active"
+        >Diseases</a
+      >
+      <a class="nav-link" routerLink="/help" routerLinkActive="active"
+        >Guides</a
+      >
+      <a class="nav-link" routerLink="/about" routerLinkActive="active">News</a>
+      <a class="nav-link" routerLink="/glossary" routerLinkActive="active"
+        >About GARD</a
+      >
+      <a class="nav-link" routerLink="/diseases" routerLinkActive="active"
+        >En Espanõl</a
+      >
+    </nav>
+  </div>
 
-    <div class="nav-scroller bg-white shadow-sm justify-content-center">
-        <nav class="nav nav-underline">
-            <a class="nav-link" routerLink="/diseases" routerLinkActive="active">Diseases</a>
-            <a class="nav-link" routerLink="/help" routerLinkActive="active">Guides</a>
-            <a class="nav-link" routerLink="/about" routerLinkActive="active">News</a>
-            <a class="nav-link" routerLink="/glossary" routerLinkActive="active">About GARD</a>
-            <a class="nav-link" routerLink="/diseases" routerLinkActive="active">En Espanõl</a>
-        </nav>
-    </div>
-
+  <form [formGroup]="searchForm">
     <div class="banner">
-
-        <div class="col-md-6 search-ct">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control"
-                    placeholder="Search for Diseases, Organizations, News and More..."
-                    aria-label="Search for Diseases, Organizations, News and More..." aria-describedby="basic-addon2">
-                <span class="input-group-text">GO</span>
-            </div>
+      <div class="col-md-6 search-ct">
+        <div class="input-group mb-3">
+          <input
+            formControlName="search"
+            type="text"
+            class="form-control"
+            placeholder="Search for Diseases, Organizations, News and More..."
+            aria-label="Search for Diseases, Organizations, News and More..."
+            aria-describedby="basic-addon2"
+          />
+          <span class="input-group-text" (click)="search()">GO</span>
         </div>
-
+      </div>
     </div>
+  </form>
 
-    <div class="container-fluid">
-        <router-outlet></router-outlet>
-    </div>
+  <div class="container-fluid">
+    <router-outlet></router-outlet>
+  </div>
 </div>
 
 <div class="footer">
-    <div class="shrink-width">
-        <div class="footer-links row align-items-center">
+  <div class="shrink-width">
+    <div class="footer-links row align-items-center">
+      <div class="col"><a href="/" target="_self">GARD Home</a></div>
+      <div class="col">
+        <a href="http://ncats.nih.gov/" target="_blank">NCATS Home</a>
+      </div>
+      <div class="col"><a href="/sitemap" target="_self">Site Map</a></div>
+      <div class="col">
+        <a href="/glossary" target="_self">Browse Glossary A-Z</a>
+      </div>
+      <div class="col">
+        <a href="/pages/36/privacy-notice" target="_self">Privacy Notice</a>
+      </div>
+      <div class="col">
+        <a href="/pages/37/disclaimer" target="_self">Disclaimer</a>
+      </div>
+      <div class="col">
+        <a href="/pages/38/accessibility" target="_self">Accessibility</a>
+      </div>
+      <div class="col"><a href="/pages/39/foia" target="_self">FOIA </a></div>
+      <div class="col">
+        <a href="http://oig.hhs.gov/" target="_blank">OIG</a>
+      </div>
+    </div>
 
-            <div class="col"><a href="/" target="_self">GARD Home</a></div>
-            <div class="col"><a href="http://ncats.nih.gov/" target="_blank">NCATS Home</a></div>
-            <div class="col"><a href="/sitemap" target="_self">Site Map</a></div>
-            <div class="col"><a href="/glossary" target="_self">Browse Glossary A-Z</a></div>
-            <div class="col"><a href="/pages/36/privacy-notice" target="_self">Privacy Notice</a></div>
-            <div class="col"><a href="/pages/37/disclaimer" target="_self">Disclaimer</a></div>
-            <div class="col"><a href="/pages/38/accessibility" target="_self">Accessibility</a></div>
-            <div class="col"><a href="/pages/39/foia" target="_self">FOIA </a></div>
-            <div class="col"><a href="http://oig.hhs.gov/" target="_blank">OIG</a></div>
-        </div>
+    <div class="footer-text">
+      <p>
+        If you have problems viewing PDF files, download the latest version of
+        <a
+          class="footer-links"
+          target="_blank"
+          href="https://get.adobe.com/reader/"
+          >Adobe Reader</a
+        >
+      </p>
+      <p>
+        For
+        <a
+          class="footer-links"
+          f="http://edi.nih.gov/consulting/language-access-program/about"
+          target="_blank"
+          title="Read the plan"
+          class="ext"
+          >language access</a
+        >
+        assistance, contact the
+        <a
+          class="footer-links"
+          href="mailto: info@ncats.nih.gov"
+          title="E - mail Public Information Officer"
+          >NCATS Public Information Officer</a
+        >
+      </p>
+      <p>
+        Genetic and Rare Diseases Information Center (GARD) - PO Box 8126,
+        Gaithersburg, MD 20898-8126 - Toll-free: 1-888-205-2311
+      </p>
+    </div>
 
-        <div class="footer-text">
-            <p>If you have problems viewing PDF files, download the latest version of <a class='footer-links'
-                    target="_blank" href="https://get.adobe.com/reader/">Adobe Reader</a></p>
-            <p>For <a class='footer-links' f="http://edi.nih.gov/consulting/language-access-program/about"
-                    target="_blank" title="Read the plan" class="ext">language access</a> assistance, contact the <a
-                    class='footer-links' href="mailto: info@ncats.nih.gov"
-                    title="E - mail Public Information Officer">NCATS Public Information
-                    Officer</a></p>
-            <p>Genetic and Rare Diseases Information Center (GARD) - PO Box 8126, Gaithersburg, MD 20898-8126 -
-                Toll-free:
-                1-888-205-2311</p>
-        </div>
-
-        <!-- <div class="footer-social">
+    <!-- <div class="footer-social">
         <a class="contact-icon" href="/about-gard/contact-gard"><span><span class="hidden">contact
                     gard</span></span></a>
         <a target="_blank" class="facebook-icon"
@@ -77,6 +123,5 @@
         <a target="_blank" class="twitter-icon" href="https://twitter.com/ORDR"><span><span class="hidden">Office of
                     Rare Disease Research on Twitter</span></span></a>
     </div> -->
-
-    </div>
+  </div>
 </div>

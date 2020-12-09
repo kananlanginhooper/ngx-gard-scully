@@ -5,6 +5,7 @@ import { DiseaseDetailsComponent } from './disease-details/disease-details.compo
 import { DiseasesComponent } from './diseases/diseases.component';
 import { GlossaryComponent } from './glossary/glossary.component';
 import { HelpComponent } from './help/help.component';
+import { SearchResultsComponent } from './search-results/search-results.component';
 
 const routes: Routes = [
   { path: 'about', component: AboutComponent },
@@ -12,10 +13,11 @@ const routes: Routes = [
   { path: 'glossary', component: GlossaryComponent },
   { path: 'diseases', component: DiseasesComponent },
   { path: 'diseases/:id', component: DiseaseDetailsComponent },
+  { path: 'search', component: SearchResultsComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
