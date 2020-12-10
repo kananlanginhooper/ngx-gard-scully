@@ -44,3 +44,9 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+GARD_Node_SFDownload/node_modules
+GARD_Node_SFDownload/singles
+GARD_Node_SFDownload/diseases.json
+GARD_Node_SFDownload/.env
+GARD_Node_SFDownload/.idea
