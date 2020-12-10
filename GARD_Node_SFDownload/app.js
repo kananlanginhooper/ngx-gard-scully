@@ -7,14 +7,19 @@ const AWS = require('aws-sdk');
 require('dotenv').config()
 
 // Global Config
+const Legacy = true;
 const FetchAllData = (process.env.FetchAllData === 'true'); // False = 500 records, True = 8000+
 const AlsoWriteLocalJSONFiles = (process.env.AlsoWriteLocalJSONFiles === 'true');
 const S3Bucket = process.env.bucket;
+const LegacyKey = process.env.LegacyKey;
 
 // Output settings so we can always be clear
+console.log("Fetching Data from:", Legacy ? 'Legacy' : 'Salesforce');
 console.log("FetchAllData:", FetchAllData);
 console.log("AlsoWriteLocalJSONFiles:", AlsoWriteLocalJSONFiles);
 
+// setup for modern SSL
+https.globalAgent.options.secureProtocol = 'TLSv1_2_method';
 
 // AWS Setup
 AWS.config.update(
@@ -54,7 +59,7 @@ async function wait(DelayInMs) {
 function UploadToS3(FileNameAKAKey, FileContentOrStream, Error, Success) {
   const uploadParams = {
     ACL: 'public-read',
-    Bucket: 'gard-rarediseases-json',
+    Bucket: S3Bucket,
     Key: FileNameAKAKey,
     Body: FileContentOrStream
   };
@@ -81,99 +86,53 @@ function UploadToS3(FileNameAKAKey, FileContentOrStream, Error, Success) {
   }
 }
 
-// setup for modern SSL
-https.globalAgent.options.secureProtocol = 'TLSv1_2_method';
 
-// Auth Form data
-const formData_auth = new FormData();
-formData_auth.append('username', 'gardweb.integration@nih.gov.qa');
-formData_auth.append('client_id', process.env.client_id);
-formData_auth.append('client_secret', process.env.client_secret);
-formData_auth.append('password', process.env.password);
-formData_auth.append('grant_type', 'password');
+if (Legacy) {
 
-const options_auth = {
-  host: 'ncats--qa.my.salesforce.com',
-  path: '/services/oauth2/token',
-  method: 'POST',
-  headers: formData_auth.getHeaders()
-};
+  FetchDataForMainQuery = (DataURI) => {
+    console.log('Starting Main Data call:', DataURI);
+    const options_data = {
+      host: 'api.rarediseases.info.nih.gov',
+      path: DataURI,
+      method: 'GET',
+      timeout: 5000,
+      headers: {
+        'APIKey': LegacyKey
+      }
+    };
+    const req_data = https.request(options_data, callback_main_query);
+    req_data.on('error', function (error) {
+      console.error('!!!');
+      console.error(error);
+      console.error('!!!');
+      // retry
+      setTimeout(FetchDataForMainQuery.bind(null, DataURI), 5000);
 
-let JWT = null;
-const InitialMainDataQueryURI = encodeURI('/services/data/v49.0/query/?q=select Name, Disease_Name_Full__c, LastModifiedDate,DiseaseID__c,Synonyms_List__c,Disease_Type__c,Curation_List__c,Curation_Notes__c,Curation_Status__c,Disease_Categories__c,Gene_Reviews__c,Published_to_Website__c,Gard_External_ID__c from GARD_Disease__c');
-let MainDiseaseRecords = [];
+    });
+    req_data.end();
+  }
 
-function FetchDataForMainQuery(DataURI) {
-  console.log('Starting Main Data call:', DataURI);
-  const options_data = {
-    host: 'ncats--qa.my.salesforce.com',
-    path: DataURI,
-    method: 'GET',
-    timeout: 5000,
-    headers: {
-      'Authorization': `Bearer ${JWT}`
-    }
-  };
-  const req_data = https.request(options_data, callback_main_query);
-  req_data.on('error', function (error) {
-    console.error('!!!');
-    console.error(error);
-    console.error('!!!');
-    // retry
-    setTimeout(FetchDataForMainQuery.bind(null, DataURI), 5000);
+  callback_main_query = (response) => {
+    let str = '';
 
-  });
-  req_data.end();
-}
+    // another chunk of data has been received, so append it to `str`
+    response.on('data', function (chunk) {
+      str += chunk;
+    });
 
-callback_auth = function (response) {
-  let str = '';
+    // the whole response has been received, so we just print it out here
+    response.on('end', function () {
+      const json = JSON.parse(str);
 
-  response.on('error', function (error) {
-    console.error(error);
-  });
-
-  //another chunk of data has been received, so append it to `str`
-  response.on('data', function (chunk) {
-    str += chunk;
-  });
-
-  //the whole response has been received, so we just print it out here
-  response.on('end', function () {
-    const json = JSON.parse(str);
-    JWT = json.access_token;
-    console.log('JWT Fetched');
-    FetchDataForMainQuery(InitialMainDataQueryURI);
-  });
-}
-
-callback_main_query = function (response) {
-  let str = '';
-
-  // another chunk of data has been received, so append it to `str`
-  response.on('data', function (chunk) {
-    str += chunk;
-  });
-
-  // the whole response has been received, so we just print it out here
-  response.on('end', function () {
-    const json = JSON.parse(str);
-
-    // Save data to MainDiseaseRecords
-    MainDiseaseRecords = MainDiseaseRecords.concat(json.records);
-
-    if (FetchAllData && !json.done) {
-      // Fetch more data from pagination
-      setTimeout(FetchDataForMainQuery.bind(null, json.nextRecordsUrl), 100);
-    } else {
-      // All data has been fetched, now process all in one batch
+      // Save data to MainDiseaseRecords
+      let MainDiseaseRecords = json;
 
       // to clean up data and add the Encoded name to the disease.json record
       MainDiseaseRecords.forEach((record, key, arr) => {
         if (record === undefined) {
           console.error('Record doesnt contain .Name', record);
         } else {
-          arr[key] = {...record, ...{EncodedName: Encode(record.Name)}};
+          arr[key] = {...record, ...{EncodedName: Encode(record.diseaseName)}};
         }
       });
 
@@ -182,13 +141,13 @@ callback_main_query = function (response) {
         'records': MainDiseaseRecords
       });
 
-      const KeyName = 'diseases.json';
+      const KeyName = 'diseases.legacy.json';
       UploadToS3(KeyName, TextDataForDiseasesJson
         , () => {
-          console.error('!!! Error Writing main diseases.json to S3');
+          console.error('!!! Error Writing diseases.legacy.json to S3');
         }
         , () => {
-          console.log('Diseases.json file has been saved, with', MainDiseaseRecords.length, 'records!');
+          console.log('Diseases.legacy.json file has been saved, with', MainDiseaseRecords.length, 'records!');
         }
       );
 
@@ -198,88 +157,274 @@ callback_main_query = function (response) {
         if (record === undefined) {
           console.error('Record doesnt contain .Name', record);
         } else {
-          SecondaryCallsForDiseaseDetail(record.attributes.url).then();
+          SecondaryCallsForDiseaseDetail(`/api/diseases/${record.diseaseId}`).then();
         }
       });
 
-    }
+    });
+  }
 
-  });
-}
+  SecondaryCallsForDiseaseDetail = async (SecondaryUrl) => {
+    const response = await wait(100);
+    FetchDataForSecondary(SecondaryUrl);
+  }
 
-async function SecondaryCallsForDiseaseDetail(SecondaryUrl) {
-  const response = await wait(100);
-  FetchDataForSecondary(SecondaryUrl);
-}
+  FetchDataForSecondary = (DataURI) => {
+    const options_data = {
+      host: 'api.rarediseases.info.nih.gov',
+      path: DataURI,
+      method: 'GET',
+      timeout: 5000,
+      headers: {
+        'APIKey': LegacyKey
+      }
+    };
+    const req_data = https.request(options_data, callback_data_single);
+    req_data.on('error', function (error) {
+      const retryIn = 10 + (Math.random() * 30);
+      console.error('!!! Error in FetchDataForSecondary. Retry in', retryIn);
+      console.error(error);
+      console.error('!!!');
 
-function FetchDataForSecondary(DataURI) {
-  const options_data = {
-    host: 'ncats--qa.my.salesforce.com',
-    path: DataURI,
-    method: 'GET',
-    timeout: 5000,
-    headers: {
-      'Authorization': `Bearer ${JWT}`
-    }
-  };
-  const req_data = https.request(options_data, callback_data_single);
-  req_data.on('error', function (error) {
-    const retryIn = 10 + (Math.random() * 30);
-    console.error('!!! Error in FetchDataForSecondary. Retry in', retryIn);
-    console.error(error);
-    console.error('!!!');
+      // retry
+      setTimeout(FetchDataForSecondary.bind(null, DataURI), retryIn);
+    });
+    req_data.end();
+  }
 
-    // retry
-    setTimeout(FetchDataForSecondary.bind(null, DataURI), retryIn);
-  });
-  req_data.end();
-}
+  callback_data_single = (response) => {
+    let str = '';
 
-callback_data_single = function (response) {
-  let str = '';
+    //another chunk of data has been received, so append it to `str`
+    response.on('data', function (chunk) {
+      str += chunk;
+    });
 
-  //another chunk of data has been received, so append it to `str`
-  response.on('data', function (chunk) {
-    str += chunk;
-  });
+    //the whole response has been received, so we just print it out here
+    response.on('end', function () {
+      if (str && str.length) {
+        try {
+          let json = JSON.parse(str);
+          const DiseaseName = Encode(json.Name);
+          json = {...json, ...{EncodedName: DiseaseName}};
+          const updatedSourceString = JSON.stringify(json);
+          const KeyName = `singles/${json.mainProperty.diseaseId}.json`;
+          UploadToS3(KeyName, updatedSourceString
+            , () => {
+              console.error('!!! Error Writing to S3', KeyName);
+            }
+            , () => {
+              // console.log('Success for', KeyName);
+            }
+          );
+        } catch (e) {
+          console.error('!!! Error in callback_data_single:response.on.end');
+          console.error(e);
+          console.error('!!!');
+        }
+      }
+    });
+  }
 
-  //the whole response has been received, so we just print it out here
-  response.on('end', function () {
-    if (str && str.length) {
-      try {
-        const json = JSON.parse(str);
-        const DiseaseName = Encode(json.Name);
-        const KeyName = 'singles/' + DiseaseName + '.json';
-        UploadToS3(KeyName, str
+// start Fetch
+  FetchDataForMainQuery('/api/diseases');
+
+
+} else {
+
+  let JWT = null;
+  const InitialMainDataQueryURI = encodeURI('/services/data/v49.0/query/?q=select Name, Disease_Name_Full__c, LastModifiedDate,DiseaseID__c,Synonyms_List__c,Disease_Type__c,Curation_List__c,Curation_Notes__c,Curation_Status__c,Disease_Categories__c,Gene_Reviews__c,Published_to_Website__c,Gard_External_ID__c from GARD_Disease__c');
+  let MainDiseaseRecords = [];
+
+  callback_auth = (response) => {
+    let str = '';
+
+    response.on('error', function (error) {
+      console.error(error);
+    });
+
+    //another chunk of data has been received, so append it to `str`
+    response.on('data', function (chunk) {
+      str += chunk;
+    });
+
+    //the whole response has been received, so we just print it out here
+    response.on('end', function () {
+      const json = JSON.parse(str);
+      JWT = json.access_token;
+      console.log('JWT Fetched');
+      FetchDataForMainQuery(InitialMainDataQueryURI);
+    });
+  }
+
+  FetchDataForMainQuery = (DataURI) => {
+    console.log('Starting Main Data call:', DataURI);
+    const options_data = {
+      host: 'ncats--qa.my.salesforce.com',
+      path: DataURI,
+      method: 'GET',
+      timeout: 5000,
+      headers: {
+        'Authorization': `Bearer ${JWT}`
+      }
+    };
+    const req_data = https.request(options_data, callback_main_query);
+    req_data.on('error', function (error) {
+      console.error('!!!');
+      console.error(error);
+      console.error('!!!');
+      // retry
+      setTimeout(FetchDataForMainQuery.bind(null, DataURI), 5000);
+
+    });
+    req_data.end();
+  }
+
+  callback_main_query = (response) => {
+    let str = '';
+
+    // another chunk of data has been received, so append it to `str`
+    response.on('data', function (chunk) {
+      str += chunk;
+    });
+
+    // the whole response has been received, so we just print it out here
+    response.on('end', function () {
+      const json = JSON.parse(str);
+
+      // Save data to MainDiseaseRecords
+      MainDiseaseRecords = MainDiseaseRecords.concat(json.records);
+
+      if (FetchAllData && !json.done) {
+        // Fetch more data from pagination
+        setTimeout(FetchDataForMainQuery.bind(null, json.nextRecordsUrl), 100);
+      } else {
+        // All data has been fetched, now process all in one batch
+
+        // to clean up data and add the Encoded name to the disease.json record
+        MainDiseaseRecords.forEach((record, key, arr) => {
+          if (record === undefined) {
+            console.error('Record doesnt contain .Name', record);
+          } else {
+            arr[key] = {...record, ...{EncodedName: Encode(record.Name)}};
+          }
+        });
+
+        const TextDataForDiseasesJson = JSON.stringify({
+          'totalSize': MainDiseaseRecords.length,
+          'records': MainDiseaseRecords
+        });
+
+        const KeyName = 'diseases.json';
+        UploadToS3(KeyName, TextDataForDiseasesJson
           , () => {
-            console.error('!!! Error Writing to S3', KeyName);
+            console.error('!!! Error Writing main diseases.json to S3');
           }
           , () => {
-            // console.log('Success for', KeyName);
+            console.log('Diseases.json file has been saved, with', MainDiseaseRecords.length, 'records!');
           }
         );
-      } catch (e) {
-        console.error('!!! Error in callback_data_single:response.on.end');
-        console.error(e);
-        console.error('!!!');
+
+        // after all processing on diseases.json is done...
+        // Make secondary calls for each disease
+        MainDiseaseRecords.forEach(record => {
+          if (record === undefined) {
+            console.error('Record doesnt contain .Name', record);
+          } else {
+            SecondaryCallsForDiseaseDetail(record.attributes.url).then();
+          }
+        });
+
       }
-    }
-  });
-}
+
+    });
+  }
+
+  SecondaryCallsForDiseaseDetail = async (SecondaryUrl) => {
+    const response = await wait(100);
+    FetchDataForSecondary(SecondaryUrl);
+  }
+
+  FetchDataForSecondary = (DataURI) => {
+    const options_data = {
+      host: 'ncats--qa.my.salesforce.com',
+      path: DataURI,
+      method: 'GET',
+      timeout: 5000,
+      headers: {
+        'Authorization': `Bearer ${JWT}`
+      }
+    };
+    const req_data = https.request(options_data, callback_data_single);
+    req_data.on('error', function (error) {
+      const retryIn = 10 + (Math.random() * 30);
+      console.error('!!! Error in FetchDataForSecondary. Retry in', retryIn);
+      console.error(error);
+      console.error('!!!');
+
+      // retry
+      setTimeout(FetchDataForSecondary.bind(null, DataURI), retryIn);
+    });
+    req_data.end();
+  }
+
+  callback_data_single = (response) => {
+    let str = '';
+
+    //another chunk of data has been received, so append it to `str`
+    response.on('data', function (chunk) {
+      str += chunk;
+    });
+
+    //the whole response has been received, so we just print it out here
+    response.on('end', function () {
+      if (str && str.length) {
+        try {
+          const json = JSON.parse(str);
+          const DiseaseName = Encode(json.Name);
+          const KeyName = 'singles/' + DiseaseName + '.json';
+          UploadToS3(KeyName, str
+            , () => {
+              console.error('!!! Error Writing to S3', KeyName);
+            }
+            , () => {
+              // console.log('Success for', KeyName);
+            }
+          );
+        } catch (e) {
+          console.error('!!! Error in callback_data_single:response.on.end');
+          console.error(e);
+          console.error('!!!');
+        }
+      }
+    });
+  }
+
+
+// Auth Form data
+  const formData_auth = new FormData();
+  formData_auth.append('username', 'gardweb.integration@nih.gov.qa');
+  formData_auth.append('client_id', process.env.client_id);
+  formData_auth.append('client_secret', process.env.client_secret);
+  formData_auth.append('password', process.env.password);
+  formData_auth.append('grant_type', 'password');
+
+  const options_auth = {
+    host: 'ncats--qa.my.salesforce.com',
+    path: '/services/oauth2/token',
+    method: 'POST',
+    headers: formData_auth.getHeaders()
+  };
 
 // start Auth Call
-const req_auth = https.request(options_auth, callback_auth);
+  const req_auth = https.request(options_auth, callback_auth);
 
 // Add in form data
-formData_auth.pipe(req_auth);
-req_auth.on('error', function (e) {
-  console.error(e);
-});
+  formData_auth.pipe(req_auth);
+  req_auth.on('error', function (e) {
+    console.error(e);
+  });
 
 // close AUTH connection
-req_auth.end();
-
-
-
-
-
+  req_auth.end();
+}
