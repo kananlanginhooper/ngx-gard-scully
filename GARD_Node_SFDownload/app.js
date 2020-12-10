@@ -205,7 +205,7 @@ if (Legacy) {
       if (str && str.length) {
         try {
           let json = JSON.parse(str);
-          const DiseaseName = Encode(json.Name);
+          const DiseaseName = Encode(json.mainProperty.diseaseName);
           json = {...json, ...{EncodedName: DiseaseName}};
           const updatedSourceString = JSON.stringify(json);
           const KeyName = `singles/${json.mainProperty.diseaseId}.json`;
