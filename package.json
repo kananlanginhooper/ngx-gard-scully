@@ -11,10 +11,10 @@
     "prepare": "npm run build -- --prod --stats-json",
     "scully": "scully",
     "scully:serve": "scully serve",
-    "fetch:fromLegacy": "cd GARD_Node_SFDownload && npm i && node app.js && cd ..",
+    "fetch:fromAPI": "cd GARD_Node_SFDownload && npm i && node app.js && cd ..",
     "fetch:copy": "cd GARD_Node_SFDownload && cp diseases.json ../src/assets && cp -r singles ../src/assets && cd ..",
     "renderRoutes": "npm run scully --scanRoutes",
-    "render:WithFetch": "npm run fetch:fromLegacy && npm run fetch:copy && npm run prepare && npm run renderRoutes",
+    "render:WithFetch": "npm run fetch:fromAPI && npm run fetch:copy && npm run prepare && npm run renderRoutes",
     "render:NoFetch": "npm run prepare && npm run renderRoutes"
   },
   "private": true,
