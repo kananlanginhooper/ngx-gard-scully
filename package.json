@@ -8,14 +8,16 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prepare": "npm run build -- --prod --stats-json",
+    "prepare": "ng build --prod --stats-json",
     "scully": "scully",
     "scully:serve": "scully serve",
     "fetch:fromAPI": "cd GARD_Node_SFDownload && npm i && node app.js && cd ..",
-    "fetch:copy": "cd GARD_Node_SFDownload && cp diseases.json ../src/assets && cp -r singles ../src/assets && cd ..",
+    "fetch:copy": "cd GARD_Node_SFDownload && cp diseases*json ../src/assets && cp -r singles ../src/assets && cd ..",
+    "fetch": "npm run fetch:fromAPI && npm run fetch:copy",
     "renderRoutes": "npm run scully --scanRoutes",
-    "render:WithFetch": "npm run fetch:fromAPI && npm run fetch:copy && npm run prepare && npm run renderRoutes",
-    "render:NoFetch": "npm run prepare && npm run renderRoutes"
+    "render:WithFetch": "npm run fetch && npm run prepare && npm run renderRoutes",
+    "render:NoFetch": "npm run prepare && npm run renderRoutes",
+    "serve": "scully serve"
   },
   "private": true,
   "dependencies": {
@@ -33,7 +35,7 @@
     "bootstrap": "^4.5.3",
     "express-serve-static-core": "^0.1.1",
     "rxjs": "~6.5.5",
-    "tslib": "^2.0.0",
+    "tslib": "^2.0.3",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {

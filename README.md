@@ -1,12 +1,17 @@
 # NgxGardSkully
 Run `npm install`
 
-# Development
+# Fetch API data - One time per computer, or to update from API
+Run `npm run fetch`
+
+# Angular Development
 Run `ng serve`
 
-# Rendering Production
-Run `npm run prepare`
-Run `npm run scully -- --scanRoutes`
+# Rendering Local
+Run `npm run render:NoFetch`
 
-# Running production server
-Run `npm run scully:serve`
+# Running Test Scully Server (After Render)
+Run `npm run serve`
+
+# Rendering Production
+Run `npm run render:WithFetch`
