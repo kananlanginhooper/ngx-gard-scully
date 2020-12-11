@@ -58,4 +58,4 @@ src/assets/diseases*json
 src/assets/singles/*
 
 # This folder should be ignored UNLESS you are building for production on the deploy branch
-/dist
+# /dist
