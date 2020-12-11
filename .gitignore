@@ -53,9 +53,9 @@ GARD_Node_SFDownload/diseases.legacy.json
 GARD_Node_SFDownload/.env
 GARD_Node_SFDownload/.idea
 
-# Disease Files
-src/assets/diseases*json
-src/assets/singles/*
+# Disease Files -- Include these in the deploy build
+# src/assets/diseases*json
+# src/assets/singles/*
 
 # This folder should be ignored UNLESS you are building for production on the deploy branch
 # /dist
