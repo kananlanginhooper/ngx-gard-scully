@@ -5,9 +5,12 @@ const https = require('https');
 const FormData = require('form-data');
 const AWS = require('aws-sdk');
 require('dotenv').config()
+// import map from 'async/mapLimit';
+const async = require('async');
 
 // Global Config
 const Legacy = true;
+const FetchThreads = 100;  // Not actually threads, but max Async/Https calls made at once
 const FetchAllData = (process.env.FetchAllData === 'true'); // False = 500 records, True = 8000+
 const AlsoWriteLocalJSONFiles = (process.env.AlsoWriteLocalJSONFiles === 'true');
 const S3Bucket = process.env.bucket;
@@ -153,46 +156,72 @@ if (Legacy) {
 
       // after all processing on diseases.json is done...
       // Make secondary calls for each disease
-      MainDiseaseRecords.forEach(record => {
+      async.mapLimit(MainDiseaseRecords, FetchThreads, async record => {
         if (record === undefined) {
           console.error('Record doesnt contain .Name', record);
         } else {
-          SecondaryCallsForDiseaseDetail(`/api/diseases/${record.diseaseId}`).then();
+          await FetchDataForSecondaryAsync(`/api/diseases/${record.diseaseId}`)
+            .then(response => {
+              // all good
+            }).catch(e => {
+              // not so good
+              if (e.ErrorReason && e.ErrorReason === 'Network') {
+                // need to reprocess
+                console.error('!!! Error in FetchDataForSecondary. Retry Now.',);
+                console.error(e);
+                console.error('!!!');
+
+                // retry
+                FetchDataForSecondaryAsync(e.DataURI);
+              } else if (e.ErrorReason && e.ErrorReason === 'S3') {
+                console.error('!!! S3 Error in callback_data_single:response.on.end');
+                console.error(e);
+                console.error('!!!');
+              }else{
+                console.error(e);
+              }
+
+            });
+        }
+      }, function (err, results) {
+        if (err) {
+          console.error('Running Secondary Fetch, error:', err);
+        } else {
+          console.log('Secondary Fetch Complete', results.length, 'records');
         }
       });
 
     });
   }
 
-  SecondaryCallsForDiseaseDetail = async (SecondaryUrl) => {
-    const response = await wait(100);
-    FetchDataForSecondary(SecondaryUrl);
-  }
+  // SecondaryCallsForDiseaseDetail = async (SecondaryUrl) => {
+  //   const response = await wait(100);
+  //   FetchDataForSecondary(SecondaryUrl);
+  // }
 
-  FetchDataForSecondary = (DataURI) => {
-    const options_data = {
-      host: 'api.rarediseases.info.nih.gov',
-      path: DataURI,
-      method: 'GET',
-      timeout: 5000,
-      headers: {
-        'APIKey': LegacyKey
-      }
-    };
-    const req_data = https.request(options_data, callback_data_single);
-    req_data.on('error', function (error) {
-      const retryIn = 10 + (Math.random() * 30);
-      console.error('!!! Error in FetchDataForSecondary. Retry in', retryIn);
-      console.error(error);
-      console.error('!!!');
+  async function FetchDataForSecondaryAsync(DataURI) {
+    return new Promise((resolve, reject) => {
 
-      // retry
-      setTimeout(FetchDataForSecondary.bind(null, DataURI), retryIn);
+      const options_data = {
+        host: 'api.rarediseases.info.nih.gov',
+        path: DataURI,
+        method: 'GET',
+        timeout: 5000,
+        headers: {
+          'APIKey': LegacyKey
+        }
+      };
+
+      const req_data = https.request(options_data, callback_data_single.bind(null, resolve, reject));
+      req_data.on('error', (error) => {
+        reject({...error, ...{DataURI, ErrorReason: 'Network'}});
+      });
+
+      req_data.end();
     });
-    req_data.end();
   }
 
-  callback_data_single = (response) => {
+  callback_data_single = (resolve, reject, response) => {
     let str = '';
 
     //another chunk of data has been received, so append it to `str`
@@ -205,10 +234,10 @@ if (Legacy) {
       if (str && str.length) {
         try {
           let json = JSON.parse(str);
-          const DiseaseName = Encode(json.mainProperty.diseaseName);
+          const DiseaseName = Encode(json.mainPropery.diseaseName);
           json = {...json, ...{EncodedName: DiseaseName}};
           const updatedSourceString = JSON.stringify(json);
-          const KeyName = `singles/${json.mainProperty.diseaseId}.json`;
+          const KeyName = `singles/${json.mainPropery.diseaseId}.json`;
           UploadToS3(KeyName, updatedSourceString
             , () => {
               console.error('!!! Error Writing to S3', KeyName);
@@ -218,12 +247,12 @@ if (Legacy) {
             }
           );
         } catch (e) {
-          console.error('!!! Error in callback_data_single:response.on.end');
-          console.error(e);
-          console.error('!!!');
+          reject({...e, ...{ErrorReason: 'S3'}});
         }
       }
+      resolve();
     });
+
   }
 
 // start Fetch
