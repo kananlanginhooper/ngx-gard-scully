@@ -44,6 +44,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+scully.log
+src/assets/scully-routes.json
 
 # Node API Fetcher files
 GARD_Node_SFDownload/node_modules
