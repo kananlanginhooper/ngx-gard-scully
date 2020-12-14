@@ -1,7 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
+# /dist --- Moved to bottom
 /tmp
 /out-tsc
 # Only exists if Bazel was run
@@ -44,3 +44,20 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+scully.log
+src/assets/scully-routes.json
+
+# Node API Fetcher files
+GARD_Node_SFDownload/node_modules
+GARD_Node_SFDownload/singles
+GARD_Node_SFDownload/diseases.json
+GARD_Node_SFDownload/diseases.legacy.json
+GARD_Node_SFDownload/.env
+GARD_Node_SFDownload/.idea
+
+# Disease Files
+src/assets/diseases*json
+src/assets/singles/*
+
+# This folder should be ignored UNLESS you are building for production on the deploy branch
+/dist
