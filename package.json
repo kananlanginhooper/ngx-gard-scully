@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prepare": "ng build --prod --stats-json",
+    "prepare": "ng build --prod",
     "scully": "scully",
     "scully:serve": "scully serve",
     "fetch:fromAPI": "cd GARD_Node_SFDownload && npm i && node app.js && cd ..",
