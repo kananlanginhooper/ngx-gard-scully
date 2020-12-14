@@ -1,22 +1,32 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ListOfDiseases } from './diseases';
 import { of } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
-
-  constructor(private client: HttpClient) {
-  }
+  constructor(private client: HttpClient) {}
 
   getAll() {
-    return of(ListOfDiseases)
+    return of(ListOfDiseases);
   }
 
   getById(id: string | number) {
     return this.client.get<any>(`/assets/json/disease${id.toString()}.json`);
   }
 
+  getSearchResults(query: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Ocp-Apim-Subscription-Key': 'b2e8ee0c20be4aeba40366f2bb693e62',
+      }),
+    };
+
+    return this.client.get<any>(
+      `https://api.bing.microsoft.com/v7.0/custom/search?q=${query}&customconfig=2bd8f57f-42a2-49ee-9a80-c9a923b01d23&mkt=en-US&count=50`,
+      httpOptions
+    );
+  }
 }
