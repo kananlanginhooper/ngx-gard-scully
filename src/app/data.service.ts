@@ -14,7 +14,7 @@ export class DataService {
   }
 
   getById(id: string | number) {
-    return this.client.get<any>(`/assets/singles/disease${id.toString()}.json`);
+    return this.client.get<any>(`/assets/singles/${id.toString()}.json`);
   }
 
   getSearchResults(query: string) {
