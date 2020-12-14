@@ -21,3 +21,4 @@ const diseaseIdPlugin = async (route: string, options): Promise<HandledRoute[]> 
 
 const validator = async (conf) => [];
 registerPlugin('router', 'diseaseIds', diseaseIdPlugin, validator);
+
