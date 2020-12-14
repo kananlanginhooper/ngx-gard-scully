@@ -1,13 +1,41 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const scully_1 = require("@scullyio/scully");
-const diseases_1 = require("../../src/app/diseases");
-const rxjs_1 = require("rxjs");
-async function diseaseIdPlugin(route, config = {}) {
-    const obs = rxjs_1.of(diseases_1.ListOfDiseases); // mock observable
-    const ids = await obs.toPromise();
-    return ids.map(id => ({ route: `/diseases/${id}` }));
-}
+// import { ListOfDiseases } from '../../src/app/diseases';
+// import { of } from 'rxjs';
+// @ts-ignore
+const ListOfDiseases = __importStar(require("../../src/assets/diseases.legacy.json"));
+// async function diseaseIdPlugin(route: string, config = {}): Promise<HandledRoute[]> {
+//     const obs = of(ListOfDiseases); // mock observable
+//     const ids = await obs.toPromise();
+//     return ids.map(id => ({ route: `/diseases/${id}` }));
+// }
+const diseaseIdPlugin = async (route, options) => {
+    const arrHandledRoutes = Array();
+    ListOfDiseases.records.forEach(record => {
+        arrHandledRoutes.push({ route: `/diseases/${record.diseaseId}` });
+    });
+    return arrHandledRoutes;
+};
 const validator = async (conf) => [];
 scully_1.registerPlugin('router', 'diseaseIds', diseaseIdPlugin, validator);
 //# sourceMappingURL=data.plugin.js.map
