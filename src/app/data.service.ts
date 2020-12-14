@@ -8,7 +8,6 @@ import {Observable, of} from 'rxjs';
 })
 export class DataService {
   constructor(private client: HttpClient) {}
-
   getAll(): Observable<any> {
     return of(ListOfDiseases);
   }
@@ -17,7 +16,7 @@ export class DataService {
     return this.client.get<any>(`/assets/singles/${id.toString()}.json`);
   }
 
-  getSearchResults(query: string): void {
+  getSearchResults(query: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Ocp-Apim-Subscription-Key': 'b2e8ee0c20be4aeba40366f2bb693e62',
