@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SearchResultsComponent } from './search-results/search-results.component';
+import { EspanolComponent } from './espanol/espanol.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SearchResultsComponent } from './search-results/search-results.componen
     DiseasesComponent,
     DiseaseDetailsComponent,
     SearchResultsComponent,
+    EspanolComponent,
   ],
   imports: [
     BrowserModule,
