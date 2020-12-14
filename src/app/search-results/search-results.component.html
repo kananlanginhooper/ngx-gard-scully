@@ -1,3 +1,22 @@
 <div class="mt-4 mb-4">
   Below are search results for: <b>{{ query }}</b>
 </div>
+
+<div class="mt-4 mb-4">
+  <ol>
+    <li *ngFor="let result of searchResults" class="mb-4">
+      <div class="mb-2">
+        <a
+          class="nav-link active"
+          [routerLink]="['/diseases/', result.diseaseId]"
+          routerLinkActive="active"
+        >
+          {{ result.name }}
+        </a>
+      </div>
+      <div>
+        {{ result.snippet }}
+      </div>
+    </li>
+  </ol>
+</div>
