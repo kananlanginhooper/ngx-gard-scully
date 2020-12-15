@@ -12,7 +12,7 @@
     "scully": "scully",
     "scully:serve": "scully serve",
     "fetch:fromAPI": "cd GARD_Node_SFDownload && npm i && node app.js && cd ..",
-    "fetch:copy": "cp GARD_Node_SFDownload/diseases*json src/assets && mkdir src/assets/singles && cp -r GARD_Node_SFDownload/singles/* src/assets/singles",
+    "fetch:copy": "node ./GARD_Node_SFDownload/move.js",
     "fetch": "npm run fetch:fromAPI && npm run fetch:copy",
     "renderRoutes": "npm run scully --scanRoutes",
     "render:WithFetch": "npm run fetch && npm run build && npm run renderRoutes",
