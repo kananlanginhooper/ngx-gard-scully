@@ -158,7 +158,7 @@ if (Legacy) {
           console.error('!!! Error Writing diseases.legacy.json to S3');
         }
         , () => {
-          console.log('Diseases.legacy.json file has been saved, with', MainDiseaseRecords.length, 'records!');
+          console.log('diseases.legacy.json file has been saved, with', MainDiseaseRecords.length, 'records!');
         }
       );
 
