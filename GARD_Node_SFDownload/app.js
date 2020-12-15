@@ -142,6 +142,11 @@ if (Legacy) {
         }
       });
 
+      // remove some data, handy for testing
+      if(!FetchAllData){
+        MainDiseaseRecords = MainDiseaseRecords.slice(0, 50);
+      }
+
       const TextDataForDiseasesJson = JSON.stringify({
         'totalSize': MainDiseaseRecords.length,
         'records': MainDiseaseRecords
