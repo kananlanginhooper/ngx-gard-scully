@@ -156,6 +156,11 @@ if (Legacy) {
 
       // after all processing on diseases.json is done...
       // Make secondary calls for each disease
+      const DiseaseDetailDirectory = 'singles'
+      if (!fs.existsSync(DiseaseDetailDirectory)){
+        fs.mkdirSync(DiseaseDetailDirectory);
+      }
+
       async.mapLimit(MainDiseaseRecords, FetchThreads, async record => {
         if (record === undefined) {
           console.error('Record doesnt contain .Name', record);
