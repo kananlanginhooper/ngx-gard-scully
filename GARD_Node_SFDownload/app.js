@@ -11,6 +11,7 @@ const async = require('async');
 // Global Config
 const Legacy = true;
 const FetchThreads = 100;  // Not actually threads, but max Async/Https calls made at once
+const LogFileSave = false;  // Not actually threads, but max Async/Https calls made at once
 const FetchAllData = (process.env.FetchAllData === 'true'); // False = 500 records, True = 8000+
 const AlsoWriteLocalJSONFiles = (process.env.AlsoWriteLocalJSONFiles === 'true');
 const S3Bucket = process.env.bucket;
@@ -83,7 +84,9 @@ function UploadToS3(FileNameAKAKey, FileContentOrStream, Error, Success) {
       if (err) {
         throw err;
       } else {
-        console.log(FileNameAKAKey, 'has been saved locally!');
+        if (LogFileSave) {
+          console.log(FileNameAKAKey, 'has been saved locally!');
+        }
       }
     });
   }
@@ -157,7 +160,7 @@ if (Legacy) {
       // after all processing on diseases.json is done...
       // Make secondary calls for each disease
       const DiseaseDetailDirectory = 'singles';
-      if (!fs.existsSync(DiseaseDetailDirectory)){
+      if (!fs.existsSync(DiseaseDetailDirectory)) {
         fs.mkdirSync(DiseaseDetailDirectory);
       }
 
@@ -182,7 +185,7 @@ if (Legacy) {
                 console.error('!!! S3 Error in callback_data_single:response.on.end');
                 console.error(e);
                 console.error('!!!');
-              }else{
+              } else {
                 console.error(e);
               }
 
