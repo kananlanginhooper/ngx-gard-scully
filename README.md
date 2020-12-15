@@ -5,7 +5,7 @@ Run `npm install`
 Run `npm run fetch`
 
 # Angular Development
-Run `ng serve`
+Run `npm run start`
 
 # Rendering Local
 Run `npm run render:NoFetch`
