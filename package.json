@@ -19,7 +19,7 @@
     "render:NoFetch": "npm run build && npm run renderRoutes",
     "serve": "scully serve",
     "clean": "rm -rf dist/* && rm -rf GARD_Node_SFDownload/singles/* && rm -rf GARD_Node_SFDownload/*.json",
-    "deploy": "git reset head --hard && git fetch --all && git merge origin/master"
+    "deploy": "git reset head --hard && git fetch --all && git merge origin/master --no-edit"
   },
   "private": true,
   "dependencies": {
