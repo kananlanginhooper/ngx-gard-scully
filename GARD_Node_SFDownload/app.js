@@ -11,7 +11,7 @@ const async = require('async');
 // Global Config
 const Legacy = true;
 const FetchThreads = 100;  // Not actually threads, but max Async/Https calls made at once
-const LogFileSave = false;  // Not actually threads, but max Async/Https calls made at once
+const LogFileSave = (process.env.LogFileSave === 'true'); // True will write to console on each file write
 const FetchAllData = (process.env.FetchAllData === 'true'); // False = 500 records, True = 8000+
 const AlsoWriteLocalJSONFiles = (process.env.AlsoWriteLocalJSONFiles === 'true');
 const S3Bucket = process.env.bucket;
