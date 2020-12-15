@@ -156,7 +156,7 @@ if (Legacy) {
 
       // after all processing on diseases.json is done...
       // Make secondary calls for each disease
-      const DiseaseDetailDirectory = 'singles'
+      const DiseaseDetailDirectory = 'singles';
       if (!fs.existsSync(DiseaseDetailDirectory)){
         fs.mkdirSync(DiseaseDetailDirectory);
       }
