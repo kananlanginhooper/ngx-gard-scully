@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ListOfDiseases } from './diseases';
-import { of } from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   constructor(private client: HttpClient) {}
-
-  getAll() {
+  getAll(): Observable<any> {
     return of(ListOfDiseases);
   }
 
-  getById(id: string | number) {
+  getById(id: string | number): Observable<any> {
     return this.client.get<any>(`/assets/singles/${id.toString()}.json`);
   }
 
-  getSearchResults(query: string) {
+  getSearchResults(query: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Ocp-Apim-Subscription-Key': 'b2e8ee0c20be4aeba40366f2bb693e62',

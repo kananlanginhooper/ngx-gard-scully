@@ -11,6 +11,7 @@ const async = require('async');
 // Global Config
 const Legacy = true;
 const FetchThreads = 100;  // Not actually threads, but max Async/Https calls made at once
+const LogFileSave = (process.env.LogFileSave === 'true'); // True will write to console on each file write
 const FetchAllData = (process.env.FetchAllData === 'true'); // False = 500 records, True = 8000+
 const AlsoWriteLocalJSONFiles = (process.env.AlsoWriteLocalJSONFiles === 'true');
 const S3Bucket = process.env.bucket;
@@ -83,7 +84,9 @@ function UploadToS3(FileNameAKAKey, FileContentOrStream, Error, Success) {
       if (err) {
         throw err;
       } else {
-        console.log(FileNameAKAKey, 'has been saved locally!');
+        if (LogFileSave) {
+          console.log(FileNameAKAKey, 'has been saved locally!');
+        }
       }
     });
   }
@@ -139,6 +142,11 @@ if (Legacy) {
         }
       });
 
+      // remove some data, handy for testing
+      if(!FetchAllData){
+        MainDiseaseRecords = MainDiseaseRecords.slice(0, 50);
+      }
+
       const TextDataForDiseasesJson = JSON.stringify({
         'totalSize': MainDiseaseRecords.length,
         'records': MainDiseaseRecords
@@ -150,12 +158,17 @@ if (Legacy) {
           console.error('!!! Error Writing diseases.legacy.json to S3');
         }
         , () => {
-          console.log('Diseases.legacy.json file has been saved, with', MainDiseaseRecords.length, 'records!');
+          console.log('diseases.legacy.json file has been saved, with', MainDiseaseRecords.length, 'records!');
         }
       );
 
       // after all processing on diseases.json is done...
       // Make secondary calls for each disease
+      const DiseaseDetailDirectory = 'singles';
+      if (!fs.existsSync(DiseaseDetailDirectory)) {
+        fs.mkdirSync(DiseaseDetailDirectory);
+      }
+
       async.mapLimit(MainDiseaseRecords, FetchThreads, async record => {
         if (record === undefined) {
           console.error('Record doesnt contain .Name', record);
@@ -177,7 +190,7 @@ if (Legacy) {
                 console.error('!!! S3 Error in callback_data_single:response.on.end');
                 console.error(e);
                 console.error('!!!');
-              }else{
+              } else {
                 console.error(e);
               }
 
