@@ -1,0 +1,26 @@
+sudo: false
+
+language: node_js
+node_js:
+  - 12
+
+cache:
+  directories:
+    - ./node_modules
+
+install:
+  - npm install
+
+script:
+  - npm run fetch
+  - npx ng build --prod
+  - npm run renderRoutes
+
+deploy:
+  provider: s3
+  access_key_id: ${accessKeyId}
+  secret_access_key: ${secretAccessKey}
+  bucket: gard-rarediseases-json
+  skip_cleanup: true
+  local_dir: dist/static
+  upload-dir: build
