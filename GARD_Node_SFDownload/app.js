@@ -153,13 +153,13 @@ if (Legacy) {
         'records': MainDiseaseRecords
       });
 
-      let KeyName = 'diseases.legacy.json';
-      UploadToS3(KeyName, TextDataForDiseasesJson
+      const KeyNameMain = 'diseases.legacy.json';
+      UploadToS3(KeyNameMain, TextDataForDiseasesJson
         , () => {
-          console.error(`!!! Error Writing ${KeyName} to S3`);
+          console.error(`!!! Error Writing ${KeyNameMain} to S3`);
         }
         , () => {
-          console.log(`${KeyName} file has been saved, with`, MainDiseaseRecords.length, 'records!');
+          console.log(`${KeyNameMain} file has been saved, with`, MainDiseaseRecords.length, 'records!');
         }
       );
 
@@ -174,13 +174,13 @@ if (Legacy) {
         })
       });
 
-      KeyName = 'diseases.legacy.trimmed.json';
-      UploadToS3(KeyName, TextDataForTrimmedDiseasesJson
+      const KeyNameTrimmed = 'diseases.legacy.trimmed.json';
+      UploadToS3(KeyNameTrimmed, TextDataForTrimmedDiseasesJson
         , () => {
-          console.error(`!!! Error Writing ${KeyName} to S3`);
+          console.error(`!!! Error Writing ${KeyNameTrimmed} to S3`);
         }
         , () => {
-          console.log(`${KeyName} file has been saved, with`, MainDiseaseRecords.length, 'records!');
+          console.log(`${KeyNameTrimmed} file has been saved, with`, MainDiseaseRecords.length, 'records!');
         }
       );
 
