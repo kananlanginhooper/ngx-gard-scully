@@ -1,0 +1,28 @@
+sudo: false
+
+language: node_js
+node_js:
+  - 12
+
+cache:
+  directories:
+    - ./node_modules
+
+install:
+  - npm install
+
+script:
+  - npm run fetch
+  - npx ng build --prod
+  - npm run renderRoutes
+
+deploy:
+  provider: s3
+  access_key_id:
+    secure: B0RFW324Iy+oyMyVnXDRaJjfgev2RVS8JZsYFv1SAohti04igH9/ODQ2xgHCJOp6yqSK5gVVffivXA8whCEExGx9OA3yBXCbJOqclhvX/7WuPjXeZ6JFHNq2KpSwfIt1c1i6h95Yd+G9ISyNGXUeCJxnb0wSUN1iQIRXBr58ij1Z475kmPx8YJTPH2HQ4RuJHjx/t1Euof5KV2ZQhb9CK0xhc/5E+PdbxKzUProPod1iMmT/lsz9y1I6qVEBBhsrT1fJFsgVqho7M2h2AjlytnLEyaihLDy6Yhw5krz4oL9ht4gB35RT0BOt1Prek48PvMEPJh77lnvloc2Aj2d2IaIOBFI/TtEJtlCBVUR1w39QPFHvGTXh+8E4AXHCGSfZ+ffqvuRuT4kgNDc2tAcpytaKFHl1NLiGJyOaaxpGAAzhn/hlEzRO20AhR228SGUzAdOSZ8HpLnRy7jvt39TrCoeBf7k2srYIxGtP9rtUzaGgwVV/l3c4Z0/Mvz7ecIue4lHv3IALRNFt1BXmmuPKUDA4A7XrA0MMbty/fL5IbBmYDs9zBFCkM8usjuCqYrvWpRJWzbGs89FoRlLjlA/XBdf8UmqlgG40C5rD6GBkoUUeYfOXzdI2QTInnZaUjayGJo/Fx+4OO8Somv4zeJKs3ZEJDOhQ3DAwTePDWWRWQDw=
+  secret_access_key:
+    secure: rse/hakqqdjjqx8/bzWBmU07V+KSSwfWEFngsvzk+b/kaOyNEdyZgZLE7vPcaPOsF5iliJC/X5rK0EmCtukYkhjL95w/pFbFX/w7SVFXqwgp64p9KMuiGNWtx9figCqaKKzV6waKja2hWsjIlkpPJKzUVNC3p+R087xGSX3uYC4LcGL+Yog23NE+nFl6HA0iGYdXdeV5g5lBsNpTlM6uVq7PIKG/VeOri1Ke3O2af8MYliPIOOOKGn5Me/c8bjz7ZcFZO0ONyQSB4w1uKjoQ4vem8kAxbMWzBO+0+buOJxDFYsuR8Um7Wv+F0smf+nt3uJ9G9u4tO11gbbRSxX7fPVh3AeNmu4OPWU+rysu87W+R1CKSpbzFMl3WQLC3EugoCn4ohuF24v4oVLYF3Y5fUM5ZwSmCtpm4/vz5e51ZJg8u8djFAxQRfmxirwMXdQk1H/hwvOaJdlWOItdYfap6tBt0Nr4j+aRiiGD/Zqih2ZYu4Ga9SzHDL6FjNfYxdjQ6ind+doETgU5fuvbTktHeiNblvo6UoE53R15cWYidTHfJErN4av3B/ICIv3krjfSFGYeRX/iqH/PeUJaq2+Sxr3XCUZJTxIQYMU/RLhIT8pz8IS7Buypwfa5tP7wu/ziS3Y0tpMg0+W7IcvyrrbCVhScVj5WW4BcI27caHbEswbI=
+  bucket: gard-rarediseases-json
+  skip_cleanup: true
+  local_dir: dist/static
+  upload-dir: build
