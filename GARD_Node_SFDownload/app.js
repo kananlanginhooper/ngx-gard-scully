@@ -143,24 +143,47 @@ if (Legacy) {
       });
 
       // remove some data, handy for testing
-      if(!FetchAllData){
+      if (!FetchAllData) {
         MainDiseaseRecords = MainDiseaseRecords.slice(0, 50);
       }
 
+      // Save main file
       const TextDataForDiseasesJson = JSON.stringify({
         'totalSize': MainDiseaseRecords.length,
         'records': MainDiseaseRecords
       });
 
-      const KeyName = 'diseases.legacy.json';
+      let KeyName = 'diseases.legacy.json';
       UploadToS3(KeyName, TextDataForDiseasesJson
         , () => {
-          console.error('!!! Error Writing diseases.legacy.json to S3');
+          console.error(`!!! Error Writing ${KeyName} to S3`);
         }
         , () => {
-          console.log('diseases.legacy.json file has been saved, with', MainDiseaseRecords.length, 'records!');
+          console.log(`${KeyName} file has been saved, with`, MainDiseaseRecords.length, 'records!');
         }
       );
+
+      // Save trimmed file for index creation
+      const TextDataForTrimmedDiseasesJson = JSON.stringify({
+        'totalSize': MainDiseaseRecords.length,
+        'records': MainDiseaseRecords.map(diseaseRecord => {
+          return {
+            id: diseaseRecord.diseaseId,
+            name: diseaseRecord.diseaseName
+          }
+        })
+      });
+
+      KeyName = 'diseases.legacy.trimmed.json';
+      UploadToS3(KeyName, TextDataForTrimmedDiseasesJson
+        , () => {
+          console.error(`!!! Error Writing ${KeyName} to S3`);
+        }
+        , () => {
+          console.log(`${KeyName} file has been saved, with`, MainDiseaseRecords.length, 'records!');
+        }
+      );
+
 
       // after all processing on diseases.json is done...
       // Make secondary calls for each disease

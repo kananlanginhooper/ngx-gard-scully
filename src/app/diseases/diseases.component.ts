@@ -4,7 +4,7 @@ import { take } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 
 // @ts-ignore
-import * as ListOfDiseases from '../../../src/assets/diseases.legacy.json';
+import * as ListOfDiseases from '../../../src/assets/diseases.legacy.trimmed.json';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class DiseasesComponent {
   data = [];
 
   constructor(dataSrv: DataService) {
-    this.data = ListOfDiseases.records.map(s => ({ id: s.diseaseId, title: s.diseaseName }));
+    this.data = ListOfDiseases.records;
 
     // dataSrv.getAll().pipe(take(1)).subscribe(ids => {
     //

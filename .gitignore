@@ -50,8 +50,7 @@ src/assets/scully-routes.json
 # Node API Fetcher files
 GARD_Node_SFDownload/node_modules
 GARD_Node_SFDownload/singles
-GARD_Node_SFDownload/diseases.json
-GARD_Node_SFDownload/diseases.legacy.json
+GARD_Node_SFDownload/diseases*json
 GARD_Node_SFDownload/.env
 GARD_Node_SFDownload/.idea
 
