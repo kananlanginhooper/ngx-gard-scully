@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const execStart = new Date()
 const fs = require('fs');
 const https = require('https');
 const FormData = require('form-data');
@@ -14,6 +15,7 @@ const FetchThreads = 100;  // Not actually threads, but max Async/Https calls ma
 const LogFileSave = (process.env.LogFileSave === 'true'); // True will write to console on each file write
 const FetchAllData = (process.env.FetchAllData === 'true'); // False = 500 records, True = 8000+
 const AlsoWriteLocalJSONFiles = (process.env.AlsoWriteLocalJSONFiles === 'true');
+const LogFileName = process.env.LogFileName || '../fetch.log';
 const S3Bucket = process.env.bucket;
 const LegacyKey = process.env.LegacyKey;
 
@@ -90,6 +92,17 @@ function UploadToS3(FileNameAKAKey, FileContentOrStream, Error, Success) {
       }
     });
   }
+}
+
+WriteLocalLog = (RecordCount) => {
+  const json = {RecordCount, execTimeMs: new Date() - execStart};
+  fs.writeFile(LogFileName, JSON.stringify(json) , (err) => {
+    if (err) {
+      throw err;
+    } else {
+        console.log(LogFileName, 'has been saved locally!');
+    }
+  });
 }
 
 
@@ -219,11 +232,12 @@ if (Legacy) {
 
             });
         }
-      }, function (err, results) {
+      }, (err, results) => {
         if (err) {
           console.error('Running Secondary Fetch, error:', err);
         } else {
           console.log('Secondary Fetch Complete', results.length, 'records');
+          WriteLocalLog(results.length);
         }
       });
 

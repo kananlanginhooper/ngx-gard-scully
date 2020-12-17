@@ -53,6 +53,7 @@ GARD_Node_SFDownload/singles
 GARD_Node_SFDownload/diseases*json
 GARD_Node_SFDownload/.env
 GARD_Node_SFDownload/.idea
+fetch.log
 
 # Disease Files
 src/assets/diseases*json
