@@ -1,0 +1,33 @@
+sudo: false
+
+language: node_js
+node_js:
+  - 12
+
+cache:
+  directories:
+    - ./node_modules
+
+install:
+  - npm install
+
+script:
+  - npm run fetch
+  - npx ng build --prod
+  - npm run renderRoutes
+
+before_deploy:
+  - mkdir dist/zip
+  - tar -zcvf dist/zip/deploy.tar.gz dist/static
+
+deploy:
+  provider: s3
+  access_key_id: ${accessKeyId}
+  secret_access_key: ${secretAccessKey}
+  bucket: gard-rarediseases-json
+  skip_cleanup: true
+  local_dir: dist/zip
+  upload-dir: build
+
+after_deploy:
+  - curl -X POST -d {} "https://webhooks.amplify.us-east-2.amazonaws.com/prod/webhooks?id=${AmplifyId}&token=${AmplifyToken}&operation=startbuild" -H "Content-Type:application/json"
