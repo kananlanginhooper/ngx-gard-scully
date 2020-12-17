@@ -18,7 +18,7 @@ script:
 
 before_deploy:
   - mkdir dist/zip
-  - tar -zcvf dist/zip/deploy.tar.gz dist/static
+  - tar -zcvf dist/zip/${DistArchiveName} dist/static
 
 deploy:
   provider: s3
