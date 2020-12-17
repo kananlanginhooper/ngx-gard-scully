@@ -28,6 +28,8 @@ deploy:
   skip_cleanup: true
   local_dir: dist/zip
   upload-dir: build
+  on:
+    all_branches: true
 
 after_deploy:
   - curl -X POST -d {} "https://webhooks.amplify.us-east-2.amazonaws.com/prod/webhooks?id=${AmplifyId}&token=${AmplifyToken}&operation=startbuild" -H "Content-Type:application/json"
