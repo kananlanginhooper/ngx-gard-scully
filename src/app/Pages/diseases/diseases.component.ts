@@ -1,10 +1,10 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { DataService } from '../data.service';
+import { DataService } from '../../data.service';
 import { take } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 
 // @ts-ignore
-import * as ListOfDiseases from '../../../src/assets/diseases.legacy.trimmed.json';
+import * as ListOfDiseases from '../../../assets/diseases.legacy.trimmed.json';
 
 
 @Component({

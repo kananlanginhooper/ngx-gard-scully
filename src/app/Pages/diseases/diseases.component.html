@@ -1,0 +1,20 @@
+<h1>GARD Disease List</h1>
+
+<div class="row ">
+  <nav class="col-md-3 shadow-sm">
+    <app-disease-sub-menu></app-disease-sub-menu>
+  </nav>
+  <div class="col-md-9">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          [routerLink]="d.id"
+          routerLinkActive="active"
+          *ngFor="let d of data"
+          >{{ d.name }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

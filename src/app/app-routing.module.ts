@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AboutComponent } from './about/about.component';
-import { DiseaseDetailsComponent } from './disease-details/disease-details.component';
-import { DiseasesComponent } from './diseases/diseases.component';
-import { EspanolComponent } from './espanol/espanol.component';
-import { GlossaryComponent } from './glossary/glossary.component';
-import { HelpComponent } from './help/help.component';
+import { AboutComponent } from './Pages/about/about.component';
+import { DiseaseDetailsComponent } from './Pages/disease-details/disease-details.component';
+import { DiseasesComponent } from './Pages/diseases/diseases.component';
+import { EspanolComponent } from './Pages/espanol/espanol.component';
+import { GlossaryComponent } from './Pages/glossary/glossary.component';
+import { HelpComponent } from './Pages/help/help.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 
 const routes: Routes = [
