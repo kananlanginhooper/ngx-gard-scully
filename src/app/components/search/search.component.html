@@ -1,0 +1,7 @@
+<p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="search($event)"
+                field="name"
+                (onSelect)="onSelect($event)"
+                placeholder="Search for Diseases, Organizations, News and More..."
+                aria-label="Search for Diseases, Organizations, News and More..."
+                aria-describedby="basic-addon2"
+></p-autoComplete>

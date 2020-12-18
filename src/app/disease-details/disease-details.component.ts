@@ -1,7 +1,7 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs/operators';
-import { DataService } from '../data.service';
+import {Component, ViewEncapsulation} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {take} from 'rxjs/operators';
+import {DataService} from '../data.service';
 
 @Component({
   selector: 'app-disease-details',
@@ -11,10 +11,17 @@ import { DataService } from '../data.service';
 })
 export class DiseaseDetailsComponent {
 
-  data = { mainPropery: null };
+  data = {mainPropery: null};
 
-  constructor(dataSrv: DataService, route: ActivatedRoute) {
-    dataSrv.getById(route.snapshot.paramMap.get('id')).pipe(take(1)).subscribe(x => this.data = x);
+  constructor(dataSrv: DataService, activatedRoute: ActivatedRoute) {
+    activatedRoute.params.subscribe(param => {
+      const diseaseId = +param.id;
+      dataSrv.getById(diseaseId).pipe(take(1)).subscribe(diseaseDetail => {
+        // console.log(`nav to:`, diseaseDetail.mainPropery.diseaseId);
+        this.data = diseaseDetail;
+      });
+    });
+
   }
 
 }

@@ -11,9 +11,12 @@ import {DiseasesComponent} from './diseases/diseases.component';
 import {DiseaseDetailsComponent} from './disease-details/disease-details.component';
 import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SearchResultsComponent} from './search-results/search-results.component';
 import {EspanolComponent} from './espanol/espanol.component';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import { SearchComponent } from './components/search/search.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,7 @@ import {EspanolComponent} from './espanol/espanol.component';
     DiseaseDetailsComponent,
     SearchResultsComponent,
     EspanolComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +40,9 @@ import {EspanolComponent} from './espanol/espanol.component';
       alwaysMonitor: true,
     }),
     ReactiveFormsModule,
+    AutoCompleteModule,
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
