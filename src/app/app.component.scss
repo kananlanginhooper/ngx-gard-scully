@@ -129,10 +129,6 @@ body {
   cursor: pointer;
 }
 
-button.go{
-  padding: 5px 5px 5px 5px;
-}
-
 @media (min-width: 768px) {
   .p-autocomplete {
     width: 300px;
@@ -141,17 +137,25 @@ button.go{
   .p-autocomplete-input {
     width: 300px;
   }
+  button.go{
+    border: none;
+    margin: 0 0 0 5px;
+  }
 }
 
 
 @media (max-width: 768px) {
   .p-autocomplete {
-    width: 100%;
+    width: calc(100% - 36px);
   }
 
   .p-autocomplete-input {
-    width: 100%;
-    //width: calc(100% - 36px);
+    // width: 100%;
+    width: calc(100% - 2px);
+  }
+  button.go{
+    border: none;
+    padding: 2px 5px 2px 5px;
   }
 }
 

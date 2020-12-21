@@ -8,6 +8,7 @@ import {Observable, of} from 'rxjs';
 })
 export class DataService {
   constructor(private client: HttpClient) {}
+
   getAll(): Observable<any> {
     return of(ListOfDiseases);
   }

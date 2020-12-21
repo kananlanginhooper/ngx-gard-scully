@@ -26,8 +26,10 @@ export class SearchComponent implements OnInit {
     this.searchFromString(event.query);
   }
 
-  buttonSearch(): void {
-    this.searchFromString(this.text);
+  bingSearch(): void {
+    this.router.navigate(['/search'], {
+      queryParams: { query: this.text },
+    }).then();
   }
 
   searchFromString(SearchString: string): void {
