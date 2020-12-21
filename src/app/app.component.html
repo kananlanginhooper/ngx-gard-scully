@@ -42,6 +42,7 @@
             placeholder="Search for Diseases, Organizations, News and More..."
             aria-label="Search for Diseases, Organizations, News and More..."
             aria-describedby="basic-addon2"
+            (keyup.enter)="search()"
           />
           <span class="input-group-text" (click)="search()">GO</span>
         </div>
