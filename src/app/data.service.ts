@@ -1,20 +1,33 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ListOfDiseases } from './diseases';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
+
+// @ts-ignore
+import * as ListOfDiseases from '../assets/diseases.legacy.trimmed.json';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  constructor(private client: HttpClient) {}
 
-  getAll(): Observable<any> {
-    return of(ListOfDiseases);
+  diseaseRecords = [];
+
+  constructor(private client: HttpClient) {
+    this.diseaseRecords = ListOfDiseases.records;
   }
 
   getById(id: string | number): Observable<any> {
-    return this.client.get<any>(`/assets/singles/${id.toString()}.json`);
+    const diseaseRecordFilter = this.diseaseRecords.filter(disease => disease.id == id);
+    const diseaseRecord = diseaseRecordFilter[0];
+    if (diseaseRecord.detail === undefined) {
+      const obs = this.client.get<any>(`/assets/singles/${id.toString()}.json`);
+      obs.subscribe(detail => {
+        diseaseRecord.detail = detail;
+      });
+      return obs;
+    } else {
+      return of(diseaseRecord.detail);
+    }
   }
 
   getSearchResults(query: string): Observable<any> {
