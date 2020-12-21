@@ -101,8 +101,14 @@ body {
 }
 
 .search-ct {
+  position: relative;
   top: 40px;
   left: 30px;
+  width: 350px;
+}
+
+.fullWidth{
+  width: 100%;
 }
 
 .footer {
@@ -123,6 +129,10 @@ body {
   cursor: pointer;
 }
 
+button.go{
+  padding: 5px 5px 5px 5px;
+}
+
 @media (min-width: 768px) {
   .p-autocomplete {
     width: 300px;
@@ -133,6 +143,7 @@ body {
   }
 }
 
+
 @media (max-width: 768px) {
   .p-autocomplete {
     width: 100%;
@@ -140,6 +151,7 @@ body {
 
   .p-autocomplete-input {
     width: 100%;
+    //width: calc(100% - 36px);
   }
 }
 

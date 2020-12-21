@@ -22,13 +22,21 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  search(event): void {
+  autoSearch(event): void {
+    this.searchFromString(event.query);
+  }
+
+  buttonSearch(): void {
+    this.searchFromString(this.text);
+  }
+
+  searchFromString(SearchString: string): void {
     // reset search
     this.results = [];
 
     // do the search
     this.diseaseData.forEach(disease => {
-      if (disease.name.includes(event.query)) {
+      if (disease.name.includes(SearchString)) {
         this.results.push(disease);
       }
     });
