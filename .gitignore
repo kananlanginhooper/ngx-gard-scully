@@ -63,8 +63,7 @@ src/assets/singles/*
 Sitemap_Generator/node_modules
 Sitemap_Generator/.env
 Sitemap_Generator/.idea
-src/assets/sitemap.xml
-dist/static/sitemap.xml
+src/sitemap.xml
 
 # This folder should be ignored UNLESS you are building for production on the deploy branch
 /dist

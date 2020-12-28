@@ -8,6 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "serve": "scully serve",
     "prepare": "",
     "scully": "scully",
     "scully:serve": "scully serve",
@@ -17,10 +18,8 @@
     "fetch": "npm run fetch:fromAPI && npm run fetch:copy",
     "renderRoutes": "npm run scully --scanRoutes",
     "render:WithFetch": "npm run fetch && npm run render:NoFetch",
-    "render:NoFetch": "npm run build && npm run SiteMapBuilder && npm run renderRoutes",
-    "serve": "scully serve",
-    "clean": "rm -rf dist/* && rm -rf GARD_Node_SFDownload/singles && rm -rf GARD_Node_SFDownload/node_modules && rm -rf GARD_Node_SFDownload/diseases*json && rm -rf src/assets/singles && rm -rf src/assets/diseases*json",
-    "gitSync": "git reset head --hard && git fetch --all && git merge origin/master --no-edit"
+    "render:NoFetch": "npm run SiteMapBuilder && npm run build && npm run renderRoutes",
+    "clean": "rm -rf dist/* && rm -rf GARD_Node_SFDownload/singles && rm -rf GARD_Node_SFDownload/node_modules && rm -rf GARD_Node_SFDownload/diseases*json && rm -rf src/assets/singles && rm -rf src/assets/diseases*json && rm -rf src/sitemap.xml"
   },
   "private": true,
   "dependencies": {
