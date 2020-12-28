@@ -12,9 +12,7 @@ install:
   - npm install
 
 script:
-  - npm run fetch
-  - npx ng build --prod
-  - npm run renderRoutes
+  - npm run render:WithFetch
 
 before_deploy:
   - mkdir dist/zip
