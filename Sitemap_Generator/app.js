@@ -46,7 +46,7 @@ https.globalAgent.options.secureProtocol = 'TLSv1_2_method';
 const MainDiseaseJsonFile = path.join('../', 'src/assets/', 'diseases.legacy.json');
 const data = fs.readFileSync(MainDiseaseJsonFile, 'utf8');
 const json = JSON.parse(data);
-const SitemapFile = path.join('../', 'src/assets/', 'sitemap.xml');
+const SitemapFile = path.join('../', 'dist/static', 'sitemap.xml');
 let SiteMapData = '';
 
 SiteMapData += '<?xml version="1.0" encoding="UTF-8"?>';
@@ -54,7 +54,7 @@ SiteMapData += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
 json.records.forEach(record => {
   SiteMapData += createSitemapRecord(record);
-})
+});
 
 SiteMapData += '</urlset>';
 
