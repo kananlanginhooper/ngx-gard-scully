@@ -59,5 +59,11 @@ fetch.log
 src/assets/diseases*json
 src/assets/singles/*
 
+# Sitemap
+Sitemap_Generator/node_modules
+Sitemap_Generator/.env
+Sitemap_Generator/.idea
+src/assets/sitemap.xml
+
 # This folder should be ignored UNLESS you are building for production on the deploy branch
 /dist
