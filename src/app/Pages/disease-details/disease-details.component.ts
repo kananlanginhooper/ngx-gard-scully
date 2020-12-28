@@ -26,6 +26,8 @@ export class DiseaseDetailsComponent {
         // console.log(`nav to:`, diseaseDetail.mainPropery.diseaseId);
         this.data = diseaseDetail;
 
+        debugger;
+
         // Website Title
         this.title.setTitle(diseaseDetail.mainPropery.diseaseName);
 
@@ -47,7 +49,7 @@ export class DiseaseDetailsComponent {
         description += `${diseaseDetail.mainPropery.synonyms.join(', ')}. `;
 
         description += `It is in the categories of: `;
-        description += `${diseaseDetail.diseaseCategories.join(', ')}. `;
+        description += `${diseaseDetail.diseaseCategories.map(cat => cat.diseaseTypeName).join(', ')}. `;
 
         this.meta.addTags([
           {name: 'keywords', content: arrKeywords.join(', ')},
