@@ -1,4 +1,5 @@
-<app-json-ld UrlBase="diseases" [UrlSecond]="this.diseaseSlug" UrlThird="/OtherNames/" [UrlTop]="this.diseaseAliasEncoded"></app-json-ld>
+<app-json-ld UrlBase="diseases" [UrlSecond]="this.diseaseSlug" UrlThird="/OtherNames/"
+             [UrlTop]="this.diseaseAliasEncoded"></app-json-ld>
 <div class="row">
   <div class="col-md-3">
     <nav>
@@ -13,7 +14,8 @@
 
     <div>
       <p><i>{{this.diseaseAlias}}</i> is an alias of <i>{{this.data.mainPropery.diseaseName}}</i></p>
-      <p><a [routerLink]="['/','diseases', this.diseaseSlug]">Please click here for {{this.data.mainPropery.diseaseName}}</a></p>
+      <p><a [routerLink]="['/','diseases', this.diseaseSlug]">Please click here
+        for {{this.data.mainPropery.diseaseName}}</a></p>
     </div>
   </main>
 </div>
