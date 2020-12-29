@@ -13,7 +13,7 @@ export class JsonLdComponent implements OnInit {
   @Input() UrlTop: string;
   jsonLD: SafeHtml;
 
-  rootPath = 'https://gard.ci.ncats.io/';
+  rootPath = 'https://gard.ci.ncats.io';
 
   constructor(private domSanitizer: DomSanitizer) {
   }
