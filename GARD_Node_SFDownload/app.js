@@ -96,11 +96,11 @@ function UploadToS3(FileNameAKAKey, FileContentOrStream, Error, Success) {
 
 WriteLocalLog = (RecordCount) => {
   const json = {RecordCount, execTimeMs: new Date() - execStart};
-  fs.writeFile(LogFileName, JSON.stringify(json) , (err) => {
+  fs.writeFile(LogFileName, JSON.stringify(json), (err) => {
     if (err) {
       throw err;
     } else {
-        console.log(LogFileName, 'has been saved locally!');
+      console.log(LogFileName, 'has been saved locally!');
     }
   });
 }
@@ -166,6 +166,7 @@ if (Legacy) {
         'records': MainDiseaseRecords
       });
 
+      // diseases.legacy.json Code
       const KeyNameMain = 'diseases.legacy.json';
       UploadToS3(KeyNameMain, TextDataForDiseasesJson
         , () => {
@@ -176,27 +177,50 @@ if (Legacy) {
         }
       );
 
-      // Save trimmed file for index creation
-      const TextDataForTrimmedDiseasesJson = JSON.stringify({
-        'totalSize': MainDiseaseRecords.length,
-        'records': MainDiseaseRecords.map(diseaseRecord => {
-          return {
-            id: diseaseRecord.diseaseId,
-            name: diseaseRecord.diseaseName
+      {
+        // Save trimmed file for index creation
+        const KeyNameTrimmed = 'diseases.legacy.trimmed.json';
+        const TextDataForTrimmedDiseasesJson = JSON.stringify({
+          'totalSize': MainDiseaseRecords.length,
+          'records': MainDiseaseRecords.map(diseaseRecord => {
+            return {
+              id: diseaseRecord.diseaseId,
+              name: diseaseRecord.diseaseName,
+              EncodedName: diseaseRecord.EncodedName
+            }
+          })
+        });
+
+        UploadToS3(KeyNameTrimmed, TextDataForTrimmedDiseasesJson
+          , () => {
+            console.error(`!!! Error Writing ${KeyNameTrimmed} to S3`);
           }
-        })
-      });
+          , () => {
+            console.log(`${KeyNameTrimmed} file has been saved, with`, MainDiseaseRecords.length, 'records!');
+          }
+        );
+      }
 
-      const KeyNameTrimmed = 'diseases.legacy.trimmed.json';
-      UploadToS3(KeyNameTrimmed, TextDataForTrimmedDiseasesJson
-        , () => {
-          console.error(`!!! Error Writing ${KeyNameTrimmed} to S3`);
-        }
-        , () => {
-          console.log(`${KeyNameTrimmed} file has been saved, with`, MainDiseaseRecords.length, 'records!');
-        }
-      );
+      {
+        // Save Alias file for index creation
+        const KeyNameAlias = 'diseases.legacy.alias.json';
+        const alias = MainDiseaseRecords.flatMap(diseaseRecord => diseaseRecord.synonyms.map(alias => {
+          return {EncodedName: diseaseRecord.EncodedName, EncodedAlias: Encode(alias), alias}
+        }));
+        const TextDataForAliasDiseasesJson = JSON.stringify({
+          'totalSize': alias.length,
+          alias
+        });
 
+        UploadToS3(KeyNameAlias, TextDataForAliasDiseasesJson
+          , () => {
+            console.error(`!!! Error Writing ${KeyNameAlias} to S3`);
+          }
+          , () => {
+            console.log(`${KeyNameAlias} file has been saved, with`, alias.length, 'records!');
+          }
+        );
+      }
 
       // after all processing on diseases.json is done...
       // Make secondary calls for each disease

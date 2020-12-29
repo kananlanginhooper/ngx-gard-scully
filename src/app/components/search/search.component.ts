@@ -1,25 +1,46 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 
 // @ts-ignore
 import * as ListOfDiseases from '../../../../src/assets/diseases.legacy.trimmed.json';
+
+// @ts-ignore
+import * as ListOfDiseaseAlias from '../../../../src/assets/diseases.legacy.alias.json';
+
+class DiseaseListing {
+  Search: string;
+  UrlBase: string;
+  UrlOtherName: string;
+
+  constructor(Search: string, UrlBase: string, UrlOtherName: string) {
+    this.Search = Search;
+    this.UrlBase = UrlBase;
+    this.UrlOtherName = UrlOtherName;
+  }
+
+  getRouting(): string[] {
+    if (this.UrlOtherName) {
+      return ['/diseases', this.UrlBase, 'OtherNames', this.UrlOtherName];
+    } else {
+      return ['/diseases', this.UrlBase];
+    }
+  }
+
+}
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
 
   text: string;
-  results: object[];
+  results: DiseaseListing[];
   diseaseData = [];
 
   constructor(private router: Router) {
     this.diseaseData = ListOfDiseases.records;
-  }
-
-  ngOnInit(): void {
   }
 
   autoSearch(event): void {
@@ -28,7 +49,7 @@ export class SearchComponent implements OnInit {
 
   bingSearch(): void {
     this.router.navigate(['/search'], {
-      queryParams: { query: this.text },
+      queryParams: {query: this.text},
     }).then();
   }
 
@@ -39,16 +60,23 @@ export class SearchComponent implements OnInit {
     // do the search
     this.diseaseData.forEach(disease => {
       if (disease.name.includes(SearchString)) {
-        this.results.push(disease);
+        this.results.push(new DiseaseListing(disease.name, disease.EncodedName, ''));
+      }
+    });
+
+    ListOfDiseaseAlias.alias.forEach(diseaseAlias => {
+      if (diseaseAlias.alias.includes(SearchString)) {
+        this.results.push(new DiseaseListing(diseaseAlias.alias, diseaseAlias.EncodedName, diseaseAlias.EncodedAlias));
       }
     });
 
   }
 
-  onSelect(event): void {
-    this.text = '';
-    this.results = [];
-    this.router.navigate(['/diseases', event.id]).then();
+  onSelect(event: DiseaseListing): void {
+    this.router.navigate(event.getRouting()).then(() => {
+      this.text = '';
+      this.results = [];
+    });
   }
 
 

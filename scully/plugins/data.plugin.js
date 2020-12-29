@@ -20,22 +20,29 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const scully_1 = require("@scullyio/scully");
-// import { ListOfDiseases } from '../../src/app/diseases';
-// import { of } from 'rxjs';
 // @ts-ignore
 const ListOfDiseases = __importStar(require("../../src/assets/diseases.legacy.json"));
-// async function diseaseIdPlugin(route: string, config = {}): Promise<HandledRoute[]> {
-//     const obs = of(ListOfDiseases); // mock observable
-//     const ids = await obs.toPromise();
-//     return ids.map(id => ({ route: `/diseases/${id}` }));
-// }
+// @ts-ignore
+const ListOfDiseaseAlias = __importStar(require("../../src/assets/diseases.legacy.alias.json"));
 const diseaseIdPlugin = async (route, options) => {
     const arrHandledRoutes = Array();
     ListOfDiseases.records.forEach(record => {
-        arrHandledRoutes.push({ route: `/diseases/${record.diseaseId}` });
+        arrHandledRoutes.push({ route: `/diseases/${record.EncodedName}` });
+        arrHandledRoutes.push({ route: `/diseases/${record.EncodedName}/OtherNames` });
+    });
+    ListOfDiseaseAlias.alias.forEach(record => {
+        arrHandledRoutes.push({ route: `/diseases/${record.EncodedName}/OtherNames/${record.EncodedAlias}` });
     });
     return arrHandledRoutes;
 };
 const validator = async (conf) => [];
 scully_1.registerPlugin('router', 'diseaseIds', diseaseIdPlugin, validator);
+const diseaseAliasPlugin = async (route, options) => {
+    const arrHandledRoutes = Array();
+    ListOfDiseaseAlias.alias.forEach(record => {
+        arrHandledRoutes.push({ route: `/diseases/${record.EncodedName}/OtherNames/${record.EncodedAlias}` });
+    });
+    return arrHandledRoutes;
+};
+scully_1.registerPlugin('router', 'diseaseAlias', diseaseAliasPlugin);
 //# sourceMappingURL=data.plugin.js.map

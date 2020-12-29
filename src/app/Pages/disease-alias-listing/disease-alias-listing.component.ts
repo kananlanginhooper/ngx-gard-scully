@@ -2,18 +2,17 @@ import {Component, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {take} from 'rxjs/operators';
 import {DataService} from '../../data.service';
-import { Title, Meta } from '@angular/platform-browser';
+import {Title, Meta} from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-disease-details',
-  templateUrl: './disease-details.component.html',
-  styleUrls: ['./disease-details.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  selector: 'app-disease-alias-listing',
+  templateUrl: './disease-alias-listing.component.html',
+  styleUrls: ['./disease-alias-listing.component.scss']
 })
-export class DiseaseDetailsComponent {
-
+export class DiseaseAliasListingComponent {
   data = {mainPropery: null};
-  diseaseSlug = '';
+  diseaseAlias: string[];
+  diseaseSlug: string;
 
   constructor(
     dataSrv: DataService,
@@ -22,13 +21,14 @@ export class DiseaseDetailsComponent {
     private meta: Meta
   ) {
     activatedRoute.params.subscribe(param => {
-      this.diseaseSlug = param.id;
+      this.diseaseSlug = param.slug;
+
       dataSrv.getBySlug(this.diseaseSlug).pipe(take(1)).subscribe(diseaseDetail => {
         // console.log(`nav to:`, diseaseDetail.mainPropery.diseaseId);
         this.data = diseaseDetail;
 
         // Website Title
-        this.title.setTitle(diseaseDetail.mainPropery.diseaseName);
+        this.title.setTitle(`Other Names for ${diseaseDetail.mainPropery.diseaseName}`);
 
         // Keywords
         const arrKeywords = [];
@@ -37,18 +37,7 @@ export class DiseaseDetailsComponent {
 
         // Description
         let description = '';
-        description += `${diseaseDetail.mainPropery.diseaseName} is a `;
-
-        if (diseaseDetail.mainPropery.isRare) {
-          description += `rare `;
-        }else{
-          description += `genetic `;
-        }
-        description += `disease that is also know by the following names: `;
-        description += `${diseaseDetail.mainPropery.synonyms.join(', ')}. `;
-
-        description += `${diseaseDetail.mainPropery.diseaseName} is in the categories of: `;
-        description += `${diseaseDetail.diseaseCategories.map(cat => cat.diseaseTypeName).join(', ')}. `;
+        description += `Other Names for ${diseaseDetail.mainPropery.diseaseName}: ${diseaseDetail.mainPropery.synonyms.join(', ')}`;
 
         this.meta.addTags([
           {name: 'keywords', content: arrKeywords.join(', ')},
@@ -61,3 +50,4 @@ export class DiseaseDetailsComponent {
   }
 
 }
+

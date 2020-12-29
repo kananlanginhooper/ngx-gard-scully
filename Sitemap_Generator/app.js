@@ -35,7 +35,15 @@ const MySqlDate = new Date().toISOString().split('T')[0];
 createSitemapRecord = (record) => {
   return `
   <url>
-    <loc>${baseURL}/diseases/${record.diseaseId}</loc>
+    <loc>${baseURL}/diseases/${record.EncodedName}</loc>
+    <lastmod>${MySqlDate}</lastmod>
+  </url>`;
+}
+
+createAliasSitemapRecord = (record) => {
+  return `
+  <url>
+    <loc>${baseURL}/diseases/${record.EncodedName}/OtherNames/${record.EncodedAlias}</loc>
     <lastmod>${MySqlDate}</lastmod>
   </url>`;
 }
@@ -43,18 +51,31 @@ createSitemapRecord = (record) => {
 // setup for modern SSL
 https.globalAgent.options.secureProtocol = 'TLSv1_2_method';
 
-const MainDiseaseJsonFile = path.join('../', 'src/assets/', 'diseases.legacy.json');
-const data = fs.readFileSync(MainDiseaseJsonFile, 'utf8');
-const json = JSON.parse(data);
 const SitemapFile = path.join('../', 'src', 'sitemap.xml');
 let SiteMapData = '';
 
 SiteMapData += '<?xml version="1.0" encoding="UTF-8"?>';
 SiteMapData += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
-json.records.forEach(record => {
-  SiteMapData += createSitemapRecord(record);
-});
+{ // Main Records
+  const MainDiseaseJsonFile = path.join('../', 'src/assets/', 'diseases.legacy.json');
+  const data = fs.readFileSync(MainDiseaseJsonFile, 'utf8');
+  const json = JSON.parse(data);
+
+  json.records.forEach(record => {
+    SiteMapData += createSitemapRecord(record);
+  });
+}
+
+{ // Alias Records
+  const aliasDiseaseJsonFile = path.join('../', 'src/assets/', 'diseases.legacy.alias.json');
+  const data = fs.readFileSync(aliasDiseaseJsonFile, 'utf8');
+  const json = JSON.parse(data);
+
+  json.alias.forEach(record => {
+    SiteMapData += createAliasSitemapRecord(record);
+  });
+}
 
 SiteMapData += '</urlset>';
 

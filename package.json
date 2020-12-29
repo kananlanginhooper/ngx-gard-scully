@@ -10,6 +10,7 @@
     "e2e": "ng e2e",
     "serve": "npm run build && scully serve",
     "prepare": "",
+    "scully": "scully",
     "fetch:fromAPI": "cd GARD_Node_SFDownload && npm i && node app.js && cd ..",
     "fetch:copy": "node ./GARD_Node_SFDownload/move.js",
     "SiteMapBuilder": "cd Sitemap_Generator && npm i && node app.js && cd ..",
