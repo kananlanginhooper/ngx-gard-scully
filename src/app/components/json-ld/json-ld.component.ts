@@ -34,7 +34,7 @@ export class JsonLdComponent implements OnInit {
       arrListElement.push({
         '@type': 'ListItem',
         position: 2,
-        url: this.rootPath + this.UrlSecond
+        url: this.rootPath + this.UrlBase + this.UrlSecond
       });
     }
 
@@ -42,7 +42,7 @@ export class JsonLdComponent implements OnInit {
       arrListElement.push({
         '@type': 'ListItem',
         position: 3,
-        url: this.rootPath + this.UrlThird
+        url: this.rootPath + this.UrlBase + this.UrlSecond + this.UrlThird
       });
     }
 
@@ -50,7 +50,7 @@ export class JsonLdComponent implements OnInit {
       arrListElement.push({
         '@type': 'ListItem',
         position: 4,
-        url: this.rootPath + this.UrlTop
+        url: this.rootPath + this.UrlBase + this.UrlSecond + this.UrlThird + this.UrlTop
       });
     }
 
@@ -66,9 +66,9 @@ export class JsonLdComponent implements OnInit {
   getSafeHTML(obj: object): SafeHtml {
     // If value convert to JSON and escape / to prevent script tag in JSON
     const json = JSON.stringify(obj);
-      // const json =
-      // ? JSON.stringify(obj, null, 2).replace(/\//g, '\\/')
-      // : '';
+    // const json =
+    // ? JSON.stringify(obj, null, 2).replace(/\//g, '\\/')
+    // : '';
 
     // const html = `${json}`;
     const html = `<script type="application/ld+json">${json}</script>`;
