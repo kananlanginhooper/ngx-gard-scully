@@ -26,7 +26,7 @@ export class JsonLdComponent implements OnInit {
       arrListElement.push({
         '@type': 'ListItem',
         position: 1,
-        url: this.rootPath + this.UrlBase
+        url: [this.rootPath, this.UrlBase].join('/')
       });
     }
 
@@ -34,7 +34,7 @@ export class JsonLdComponent implements OnInit {
       arrListElement.push({
         '@type': 'ListItem',
         position: 2,
-        url: this.rootPath + this.UrlBase + this.UrlSecond
+        url: [this.rootPath, this.UrlBase, this.UrlSecond].join('/')
       });
     }
 
@@ -42,7 +42,7 @@ export class JsonLdComponent implements OnInit {
       arrListElement.push({
         '@type': 'ListItem',
         position: 3,
-        url: this.rootPath + this.UrlBase + this.UrlSecond + this.UrlThird
+        url: [this.rootPath, this.UrlBase, this.UrlSecond, this.UrlThird].join('/')
       });
     }
 
@@ -50,7 +50,7 @@ export class JsonLdComponent implements OnInit {
       arrListElement.push({
         '@type': 'ListItem',
         position: 4,
-        url: this.rootPath + this.UrlBase + this.UrlSecond + this.UrlThird + this.UrlTop
+        url: [this.rootPath, this.UrlBase, this.UrlSecond, this.UrlThird, this.UrlTop].join('/')
       });
     }
 
