@@ -26,7 +26,6 @@ class DiseaseListing {
       return ['/diseases', this.UrlBase];
     }
   }
-
 }
 
 @Component({
