@@ -12,9 +12,9 @@ const diseaseIdPlugin = async (route: string, options): Promise<HandledRoute[]> 
     arrHandledRoutes.push({route: `/diseases/${record.EncodedName}`});
     arrHandledRoutes.push({route: `/diseases/${record.EncodedName}/OtherNames`});
   });
-  // ListOfDiseaseAlias.alias.forEach(record => {
-  //   arrHandledRoutes.push({route: `/diseases/${record.EncodedName}/OtherNames/${record.EncodedAlias}`});
-  // });
+  ListOfDiseaseAlias.alias.forEach(record => {
+    arrHandledRoutes.push({route: `/diseases/${record.EncodedName}/OtherNames/${record.EncodedAlias}`});
+  });
   return arrHandledRoutes;
 };
 
