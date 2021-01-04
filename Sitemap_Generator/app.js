@@ -40,6 +40,14 @@ createSitemapRecord = (record) => {
   </url>`;
 }
 
+createOtherNamesSitemapRecord = (record) => {
+  return `
+  <url>
+    <loc>${baseURL}/diseases/${record.EncodedName}/OtherNames</loc>
+    <lastmod>${MySqlDate}</lastmod>
+  </url>`;
+}
+
 createAliasSitemapRecord = (record) => {
   return `
   <url>
@@ -64,10 +72,11 @@ SiteMapData += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
   json.records.forEach(record => {
     SiteMapData += createSitemapRecord(record);
+    SiteMapData += createOtherNamesSitemapRecord(record);
   });
 }
 
-{ // Alias Records
+if (false) { // Alias Records
   const aliasDiseaseJsonFile = path.join('../', 'src/assets/', 'diseases.legacy.alias.json');
   const data = fs.readFileSync(aliasDiseaseJsonFile, 'utf8');
   const json = JSON.parse(data);
