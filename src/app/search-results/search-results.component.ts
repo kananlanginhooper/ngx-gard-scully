@@ -37,6 +37,7 @@ export class SearchResultsComponent implements OnInit {
             if (!Number.isNaN(parsed)) {
               if (result.name.indexOf('|') > -1) {
                 result.name = result.name.substr(0, result.name.indexOf('|'));
+                result.EncodedName = encodeURI(result.name.trim().replace(/ /g, '_').replace(/:/g, '_').replace(/\//g, '_'));
                 result.diseaseId = parsed;
               }
               return result;
