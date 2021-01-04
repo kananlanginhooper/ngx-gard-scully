@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
-  title = 'ngx-gard-skully';
+  title = 'GARD POC using Skully';
 
   searchForm = this.fb.group({
     search: this.fb.control(''),
@@ -17,9 +18,4 @@ export class AppComponent {
 
   constructor(private fb: FormBuilder, private router: Router) {}
 
-  search() {
-    this.router.navigate(['search'], {
-      queryParams: { query: this.searchForm.value.search },
-    });
-  }
 }

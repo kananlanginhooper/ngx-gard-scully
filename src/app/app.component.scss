@@ -18,7 +18,7 @@ body {
     transition: visibility 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
     transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
     transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out,
-      -webkit-transform 0.3s ease-in-out;
+    -webkit-transform 0.3s ease-in-out;
   }
   .offcanvas-collapse.open {
     visibility: visible;
@@ -75,9 +75,11 @@ body {
 .lh-100 {
   line-height: 1;
 }
+
 .lh-125 {
   line-height: 1.25;
 }
+
 .lh-150 {
   line-height: 1.5;
 }
@@ -99,13 +101,19 @@ body {
 }
 
 .search-ct {
+  position: relative;
   top: 40px;
   left: 30px;
+  width: 350px;
+}
+
+.fullWidth{
+  width: 100%;
 }
 
 .footer {
   background: lightgray;
-  height: 230px;
+  min-height: 230px;
 }
 
 .footer-links {
@@ -120,3 +128,56 @@ body {
 .input-group-text {
   cursor: pointer;
 }
+
+@media (min-width: 768px) {
+  .p-autocomplete {
+    width: 300px;
+  }
+
+  .p-autocomplete-input {
+    width: 300px;
+  }
+  button.go{
+    border: none;
+    margin: 0 0 0 5px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .p-autocomplete {
+    width: calc(100% - 36px);
+  }
+
+  .p-autocomplete-input {
+    // width: 100%;
+    width: calc(100% - 2px);
+  }
+  button.go{
+    border: none;
+    padding: 2px 5px 2px 5px;
+  }
+}
+
+.p-autocomplete-items {
+  background-color: white;
+}
+
+
+@media (min-width: 768px) {
+  .Page-Width {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .Page-Width {
+    width: 94%;
+    margin: auto;
+  }
+}
+
+
+
+

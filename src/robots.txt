@@ -1,0 +1,5 @@
+# Allow, for now
+User-agent: *
+Allow: /
+
+Sitemap: https://gard.ci.ncats.io/sitemap.xml

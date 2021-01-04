@@ -1,62 +1,28 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <span class="shrink-width">
-    <ul class="navbar-nav px-3 list-inline">
-      <li class="nav-item text-nowrap list-inline-item">
+  <ul class="navbar-nav px-3 list-inline">
+    <li class="nav-item text-nowrap list-inline-item">
         <span class="nav-link" href="#"
-          >U.S. Department of Health & Human Services
+        >U.S. Department of Health & Human Services
           <span class="splitter"> > </span> National Institutes of Health
           <span class="splitter"> > </span> NCATS</span
         >
-      </li>
-    </ul>
-  </span>
+    </li>
+  </ul>
 </nav>
 
-<div class="shrink-width">
-  <div class="nav-scroller bg-white shadow-sm justify-content-center">
-    <nav class="nav nav-underline">
-      <a class="nav-link" routerLink="/diseases" routerLinkActive="active"
-        >Diseases</a
-      >
-      <a class="nav-link" routerLink="/help" routerLinkActive="active"
-        >Guides</a
-      >
-      <a class="nav-link" routerLink="/news" routerLinkActive="active">News</a>
-      <a class="nav-link" routerLink="/about" routerLinkActive="active"
-        >About GARD</a
-      >
-      <a class="nav-link" routerLink="/espanol" routerLinkActive="active"
-        >En Espanõl</a
-      >
-    </nav>
-  </div>
+<div class="Page-Width">
 
-  <form [formGroup]="searchForm">
-    <div class="banner">
-      <div class="col-md-6 search-ct">
-        <div class="input-group mb-3">
-          <input
-            formControlName="search"
-            type="text"
-            class="form-control"
-            placeholder="Search for Diseases, Organizations, News and More..."
-            aria-label="Search for Diseases, Organizations, News and More..."
-            aria-describedby="basic-addon2"
-            (keyup.enter)="search()"
-          />
-          <span class="input-group-text" (click)="search()">GO</span>
-        </div>
-      </div>
-    </div>
-  </form>
+  <app-main-top-menu></app-main-top-menu>
+
+  <app-search-banner></app-search-banner>
 
   <div class="container-fluid">
     <router-outlet></router-outlet>
   </div>
 </div>
 
-<div class="footer">
-  <div class="shrink-width">
+<footer class="footer">
+  <div class="Page-Width">
     <div class="footer-links row align-items-center">
       <div class="col"><a href="/" target="_self">GARD Home</a></div>
       <div class="col">
@@ -84,49 +50,49 @@
         <a href="javascript: void(0)">OIG</a>
       </div>
     </div>
-
-    <div class="footer-text">
-      <p>
-        If you have problems viewing PDF files, download the latest version of
-        <a
-          class="footer-links"
-          target="_blank"
-          href="https://get.adobe.com/reader/"
-          >Adobe Reader</a
-        >
-      </p>
-      <p>
-        For
-        <a
-          class="footer-links"
-          f="http://edi.nih.gov/consulting/language-access-program/about"
-          target="_blank"
-          title="Read the plan"
-          class="ext"
-          >language access</a
-        >
-        assistance, contact the
-        <a
-          class="footer-links"
-          href="mailto: info@ncats.nih.gov"
-          title="E - mail Public Information Officer"
-          >NCATS Public Information Officer</a
-        >
-      </p>
-      <p>
-        Genetic and Rare Diseases Information Center (GARD) - PO Box 8126,
-        Gaithersburg, MD 20898-8126 - Toll-free: 1-888-205-2311
-      </p>
-    </div>
-
-    <!-- <div class="footer-social">
-        <a class="contact-icon" href="/about-gard/contact-gard"><span><span class="hidden">contact
-                    gard</span></span></a>
-        <a target="_blank" class="facebook-icon"
-            href="https://www.facebook.com/Office-of-Rare-Diseases-Research-ORDR-196130373766263/"><span><span
-                    class="hidden">Office of Rare Disease Research Facebook Page</span></span></a>
-        <a target="_blank" class="twitter-icon" href="https://twitter.com/ORDR"><span><span class="hidden">Office of
-                    Rare Disease Research on Twitter</span></span></a>
-    </div> -->
   </div>
-</div>
+
+  <div class="footer-text">
+    <p>
+      If you have problems viewing PDF files, download the latest version of
+      <a
+        class="footer-links"
+        target="_blank"
+        href="https://get.adobe.com/reader/"
+      >Adobe Reader</a
+      >
+    </p>
+    <p>
+      For
+      <a
+        class="footer-links"
+        f="http://edi.nih.gov/consulting/language-access-program/about"
+        target="_blank"
+        title="Read the plan"
+        class="ext"
+      >language access</a
+      >
+      assistance, contact the
+      <a
+        class="footer-links"
+        href="mailto: info@ncats.nih.gov"
+        title="E - mail Public Information Officer"
+      >NCATS Public Information Officer</a
+      >
+    </p>
+    <p>
+      Genetic and Rare Diseases Information Center (GARD) - PO Box 8126,
+      Gaithersburg, MD 20898-8126 - Toll-free: 1-888-205-2311
+    </p>
+  </div>
+
+  <!-- <div class="footer-social">
+      <a class="contact-icon" href="/about-gard/contact-gard"><span><span class="hidden">contact
+                  gard</span></span></a>
+      <a target="_blank" class="facebook-icon"
+          href="https://www.facebook.com/Office-of-Rare-Diseases-Research-ORDR-196130373766263/"><span><span
+                  class="hidden">Office of Rare Disease Research Facebook Page</span></span></a>
+      <a target="_blank" class="twitter-icon" href="https://twitter.com/ORDR"><span><span class="hidden">Office of
+                  Rare Disease Research on Twitter</span></span></a>
+  </div> -->
+</footer>

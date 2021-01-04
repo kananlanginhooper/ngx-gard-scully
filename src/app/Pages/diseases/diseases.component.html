@@ -1,0 +1,33 @@
+<h1>GARD Disease List</h1>
+
+<div class="row ">
+  <nav class="col-md-3 shadow-sm">
+    <app-disease-sub-menu></app-disease-sub-menu>
+  </nav>
+  <div class="col-md-9">
+    <h5 id="TopNav">Navigate this page:</h5>
+    <ul id="header">
+      <li *ngFor="let letter of headers">
+        <a href="#{{letter}}" (click)="scrollToView($event, letter)">{{letter}}</a>
+      </li>
+    </ul>
+
+    <div *ngFor="let letter of headers">
+      <div *ngIf="getByLetter(letter).length">
+<!--        <h3 id="{{letter}}">{{letter}} - <a (click)="scrollToView($event, 'TopNav')">[top]</a></h3>-->
+        <h3 id="{{letter}}">{{letter}}</h3>
+        <hr/>
+        <ul class="nav flex-column">
+          <li class="nav-item" *ngFor="let record of getByLetter(letter)">
+            <a
+              class="nav-link active"
+              [routerLink]="record.EncodedName"
+              routerLinkActive="active"
+            >{{ record.name }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

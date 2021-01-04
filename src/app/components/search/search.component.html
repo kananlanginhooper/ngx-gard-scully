@@ -1,0 +1,9 @@
+<p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="autoSearch($event)"
+                field="Search"
+                (onSelect)="onSelect($event)"
+                (keyup.enter)="bingSearch()"
+                placeholder="Search for Diseases, Organizations, News and More..."
+                aria-label="Search for Diseases, Organizations, News and More..."
+                aria-describedby="basic-addon2"
+></p-autoComplete>
+<button class="btn btn-secondary go" (click)="bingSearch()">GO</button>
