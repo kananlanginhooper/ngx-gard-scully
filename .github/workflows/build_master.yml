@@ -21,8 +21,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - run: echo ${branch}
-        env:
+      - env:
           accessKeyId: ${{ secrets.accessKeyId }}
           secretAccessKey: ${{ secrets.secretAccessKey }}
           client_id: ${{ secrets.client_id }}
@@ -36,9 +35,10 @@ jobs:
           AlsoWriteLocalJSONFiles: true
           bucket: gard-rarediseases-json
           LogFileSave: true
-#      - uses: actions/checkout@v2
-#        with:
-#          ref: ${branch}
+
+      #      - uses: actions/checkout@v2
+      - run: echo ${branch}
+
 #        env:
 #          accessKeyId: ${{ secrets.accessKeyId }}
 #          secretAccessKey: ${{ secrets.secretAccessKey }}
