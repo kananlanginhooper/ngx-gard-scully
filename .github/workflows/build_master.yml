@@ -69,8 +69,5 @@ jobs:
           source_dir: dist/zip
           # destination directory for upload
           destination_dir: build
-#      - name: Call Webhook
-#        run: curl -X POST -d {} "https://webhooks.amplify.us-east-2.amazonaws.com/prod/webhooks?id=${AmplifyId}&token=${AmplifyToken}&operation=startbuild" -H "Content-Type:application/json"
-#        env:
-#          AmplifyToken: ${{ secrets.AmplifyToken }}
-#          AmplifyId: ${{ secrets.AmplifyId }}
+      - name: Call Webhook
+        run: curl -X POST -d {} "https://webhooks.amplify.us-east-2.amazonaws.com/prod/webhooks?id=${{ secrets.AmplifyId }}&token=${{ secrets.AmplifyToken }}&operation=startbuild" -H "Content-Type:application/json"

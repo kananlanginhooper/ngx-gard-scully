@@ -1,5 +1,5 @@
-# Allow, for now
+# Block everyone
 User-agent: *
-Allow: /
+Disallow: /
 
-Sitemap: https://gard.ci.ncats.io/sitemap.xml
+# Sitemap: https://gard.ci.ncats.io/sitemap.xml
