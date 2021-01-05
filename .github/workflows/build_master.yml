@@ -9,23 +9,23 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  accessKeyId: ${{ secrets.accessKeyId }}
-  secretAccessKey: ${{ secrets.secretAccessKey }}
-  client_id: ${{ secrets.client_id }}
-  client_secret: ${{ secrets.client_secret }}
-  password: ${{ secrets.password }}
-  LegacyKey: ${{ secrets.LegacyKey }}
-  AmplifyToken: ${{ secrets.AmplifyToken }}
-  AmplifyId: ${{ secrets.AmplifyId }}
-  branch: master
-  FetchAllData: true
-  AlsoWriteLocalJSONFiles: true
-  bucket: gard-rarediseases-json
-  LogFileSave: true
 
 jobs:
   build:
+    env:
+      accessKeyId: ${{ secrets.accessKeyId }}
+      secretAccessKey: ${{ secrets.secretAccessKey }}
+      client_id: ${{ secrets.client_id }}
+      client_secret: ${{ secrets.client_secret }}
+      password: ${{ secrets.password }}
+      LegacyKey: ${{ secrets.LegacyKey }}
+      AmplifyToken: ${{ secrets.AmplifyToken }}
+      AmplifyId: ${{ secrets.AmplifyId }}
+      branch: master
+      FetchAllData: true
+      AlsoWriteLocalJSONFiles: true
+      bucket: gard-rarediseases-json
+      LogFileSave: true
 
     runs-on: ubuntu-latest
 
