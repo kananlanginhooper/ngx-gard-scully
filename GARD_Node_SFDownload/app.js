@@ -11,7 +11,7 @@ const async = require('async');
 
 // Global Config
 const Legacy = true;
-const FetchThreads = 100;  // Not actually threads, but max Async/Https calls made at once
+const FetchThreads = process.env.FetchThreads || 100;  // Not actually threads, but max Async/Https calls made at once
 const LogFileSave = (process.env.LogFileSave === 'true'); // True will write to console on each file write
 const FetchAllData = (process.env.FetchAllData === 'true'); // False = 500 records, True = 8000+
 const AlsoWriteLocalJSONFiles = (process.env.AlsoWriteLocalJSONFiles === 'true');
@@ -207,9 +207,12 @@ if (Legacy) {
         const alias = MainDiseaseRecords.flatMap(diseaseRecord => diseaseRecord.synonyms.map(alias => {
           return {EncodedName: diseaseRecord.EncodedName, EncodedAlias: Encode(alias), alias}
         }));
+
+        const aliasTrimmed = alias.slice(0, 15000);
+
         const TextDataForAliasDiseasesJson = JSON.stringify({
-          'totalSize': alias.length,
-          alias
+          'totalSize': aliasTrimmed.length,
+          alias: aliasTrimmed
         });
 
         UploadToS3(KeyNameAlias, TextDataForAliasDiseasesJson
