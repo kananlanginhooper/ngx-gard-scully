@@ -32,6 +32,7 @@ jobs:
           npm run render:WithFetch
           mkdir dist/zip
           tar -zcvf dist/zip/deploy.tar.gz dist/static
+        uses: ianwalter/puppeteer@v2.0.0
         env:
           accessKeyId: ${{ secrets.accessKeyId }}
           secretAccessKey: ${{ secrets.secretAccessKey }}
@@ -42,7 +43,7 @@ jobs:
           AmplifyToken: ${{ secrets.AmplifyToken }}
           AmplifyId: ${{ secrets.AmplifyId }}
           branch: master
-          FetchAllData: true
+          FetchAllData: false
           AlsoWriteLocalJSONFiles: true
           bucket: gard-rarediseases-json
           LogFileSave: true
