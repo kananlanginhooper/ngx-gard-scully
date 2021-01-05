@@ -21,20 +21,20 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - env:
-          accessKeyId: ${{ secrets.accessKeyId }}
-          secretAccessKey: ${{ secrets.secretAccessKey }}
-          client_id: ${{ secrets.client_id }}
-          client_secret: ${{ secrets.client_secret }}
-          password: ${{ secrets.password }}
-          LegacyKey: ${{ secrets.LegacyKey }}
-          AmplifyToken: ${{ secrets.AmplifyToken }}
-          AmplifyId: ${{ secrets.AmplifyId }}
-          branch: master
-          FetchAllData: true
-          AlsoWriteLocalJSONFiles: true
-          bucket: gard-rarediseases-json
-          LogFileSave: true
+      env:
+        accessKeyId: ${{ secrets.accessKeyId }}
+        secretAccessKey: ${{ secrets.secretAccessKey }}
+        client_id: ${{ secrets.client_id }}
+        client_secret: ${{ secrets.client_secret }}
+        password: ${{ secrets.password }}
+        LegacyKey: ${{ secrets.LegacyKey }}
+        AmplifyToken: ${{ secrets.AmplifyToken }}
+        AmplifyId: ${{ secrets.AmplifyId }}
+        branch: master
+        FetchAllData: true
+        AlsoWriteLocalJSONFiles: true
+        bucket: gard-rarediseases-json
+        LogFileSave: true
 
       #      - uses: actions/checkout@v2
       - run: echo ${branch}
