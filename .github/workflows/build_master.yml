@@ -12,20 +12,6 @@ on:
 
 jobs:
   build:
-    env:
-      accessKeyId: ${{ secrets.accessKeyId }}
-      secretAccessKey: ${{ secrets.secretAccessKey }}
-      client_id: ${{ secrets.client_id }}
-      client_secret: ${{ secrets.client_secret }}
-      password: ${{ secrets.password }}
-      LegacyKey: ${{ secrets.LegacyKey }}
-      AmplifyToken: ${{ secrets.AmplifyToken }}
-      AmplifyId: ${{ secrets.AmplifyId }}
-      branch: master
-      FetchAllData: true
-      AlsoWriteLocalJSONFiles: true
-      bucket: gard-rarediseases-json
-      LogFileSave: true
 
     runs-on: ubuntu-latest
 
@@ -37,7 +23,22 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ branch }}
+        ref: $branch
+      env:
+        accessKeyId: ${{ secrets.accessKeyId }}
+        secretAccessKey: ${{ secrets.secretAccessKey }}
+        client_id: ${{ secrets.client_id }}
+        client_secret: ${{ secrets.client_secret }}
+        password: ${{ secrets.password }}
+        LegacyKey: ${{ secrets.LegacyKey }}
+        AmplifyToken: ${{ secrets.AmplifyToken }}
+        AmplifyId: ${{ secrets.AmplifyId }}
+        branch: master
+        FetchAllData: true
+        AlsoWriteLocalJSONFiles: true
+        bucket: gard-rarediseases-json
+        LogFileSave: true
+
 #    - name: Use Node.js ${{ matrix.node-version }}
 #      uses: actions/setup-node@v1
 #      with:
