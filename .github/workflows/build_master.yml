@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: $branch
+        ref: ${branch}
       env:
         accessKeyId: ${{ secrets.accessKeyId }}
         secretAccessKey: ${{ secrets.secretAccessKey }}
@@ -65,5 +65,5 @@ jobs:
 #        # destination directory for upload
 #        destination_dir: build
 #    - name: Call Webhook
-#      run: curl -X POST -d {} "https://webhooks.amplify.us-east-2.amazonaws.com/prod/webhooks?id=${{ AmplifyId }}&token=${{ AmplifyToken }}&operation=startbuild" -H "Content-Type:application/json"
+#      run: curl -X POST -d {} "https://webhooks.amplify.us-east-2.amazonaws.com/prod/webhooks?id=${AmplifyId}&token=${AmplifyToken}&operation=startbuild" -H "Content-Type:application/json"
 #
