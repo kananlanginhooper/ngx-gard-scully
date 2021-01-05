@@ -49,7 +49,7 @@ jobs:
           AmplifyToken: ${{ secrets.AmplifyToken }}
           AmplifyId: ${{ secrets.AmplifyId }}
           branch: master
-          FetchAllData: false
+          FetchAllData: true
           AlsoWriteLocalJSONFiles: true
           bucket: gard-rarediseases-json
           LogFileSave: true
