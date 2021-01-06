@@ -72,7 +72,9 @@ SiteMapData += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
   json.records.forEach(record => {
     SiteMapData += createSitemapRecord(record);
-    SiteMapData += createOtherNamesSitemapRecord(record);
+    if(false) {
+      SiteMapData += createOtherNamesSitemapRecord(record);
+    }
   });
 }
 
