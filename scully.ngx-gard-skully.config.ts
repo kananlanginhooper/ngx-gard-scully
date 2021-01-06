@@ -17,5 +17,7 @@ export const config: ScullyConfig = {
       type: 'diseaseAlias',
     },
   },
+  puppeteerLaunchOptions: {executablePath: 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'},
   defaultPostRenderers: [getFlashPreventionPlugin()],
 };
+
