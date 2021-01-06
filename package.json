@@ -18,7 +18,7 @@
     "renderRoutes": "npm run scully -- --scanRoutes",
     "render:WithFetch": "npm run fetch && npm run render:NoFetch",
     "render:NoFetch": "npm run SiteMapBuilder && npm run build && npm run renderRoutes",
-    "clean": "rm -rf dist/* && rm -rf GARD_Node_SFDownload/singles && rm -rf GARD_Node_SFDownload/node_modules && rm -rf GARD_Node_SFDownload/diseases*json && rm -rf src/assets/singles && rm -rf src/assets/diseases*json && && rm -rf Sitemap_Generator/node_modules && rm -rf src/sitemap.xml"
+    "clean": "rm -rf dist/* && rm -rf GARD_Node_SFDownload/singles && rm -rf GARD_Node_SFDownload/node_modules && rm -rf GARD_Node_SFDownload/diseases*json && rm -rf src/assets/singles && rm -rf src/assets/diseases*json && rm -rf Sitemap_Generator/node_modules && rm -rf src/sitemap.xml"
   },
   "private": true,
   "dependencies": {
