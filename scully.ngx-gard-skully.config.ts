@@ -21,3 +21,4 @@ export const config: ScullyConfig = {
   defaultPostRenderers: [getFlashPreventionPlugin()],
 };
 
+
