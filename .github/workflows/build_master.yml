@@ -46,7 +46,7 @@ jobs:
           client_secret: ${{ secrets.client_secret }}
           password: ${{ secrets.password }}
           LegacyKey: ${{ secrets.LegacyKey }}
-          AmplifyToken: ${{ secrets.AmplifyToken }}
+          AmplifyToken: ${{ secrets.AmplifyToken }}2
           AmplifyId: ${{ secrets.AmplifyId }}
           branch: master
           FetchAllData: true
