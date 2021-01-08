@@ -32,14 +32,13 @@ jobs:
           sudo apt-get install -y libappindicator1 fonts-liberation
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome*.deb
-      - name: Build and Compress
+      - name: npm install
         run: |
           npm ci
+      - name: Build
+        run: |
           npm run render:WithFetch
-          mkdir dist/zip
-          tar -zcvf dist/zip/deploy.tar.gz dist/static
         env:
-          REQUIRED_OS_PACKAGES: "gconf-service, libasound2, libatk1.0-0, libc6, libcairo2, libcups2, libdbus-1-3, libexpat1, libfontconfig1, libgcc1, libgconf-2-4, libgdk-pixbuf2.0-0, libglib2.0-0, libgtk-3-0, libnspr4, libpango-1.0-0, libpangocairo-1.0-0, libstdc++6, libx11-6, libx11-xcb1, libxcb1, libxcomposite1, libxcursor1, libxdamage1, libxext6, libxfixes3, libxi6, libxrandr2, libxrender1, libxss1, libxtst6, fonts-liberation, libappindicator1, libnss3, lsb-release, xdg-utils"
           accessKeyId: ${{ secrets.accessKeyId }}
           secretAccessKey: ${{ secrets.secretAccessKey }}
           client_id: ${{ secrets.client_id }}
@@ -54,6 +53,10 @@ jobs:
           bucket: gard-rarediseases-json
           LogFileSave: false
           FetchThreads: 20
+      - name: Compress
+        run: |
+          mkdir dist/zip
+          tar -zcvf dist/zip/deploy.tar.gz dist/static
       - name: Upload to S3
         # You may pin to the exact commit or the version.
         # uses: shallwefootball/upload-s3-action@bcd7c2408245fd6cd19b5512a473b1a7a8b48a35
