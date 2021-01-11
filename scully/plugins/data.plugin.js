@@ -22,27 +22,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const scully_1 = require("@scullyio/scully");
 // @ts-ignore
 const ListOfDiseases = __importStar(require("../../src/assets/diseases.legacy.json"));
-// @ts-ignore
-const ListOfDiseaseAlias = __importStar(require("../../src/assets/diseases.legacy.alias.json"));
 const diseaseIdPlugin = async (route, options) => {
     const arrHandledRoutes = Array();
     ListOfDiseases.records.forEach(record => {
         arrHandledRoutes.push({ route: `/diseases/${record.EncodedName}` });
-        arrHandledRoutes.push({ route: `/diseases/${record.EncodedName}/OtherNames` });
     });
-    // ListOfDiseaseAlias.alias.forEach(record => {
-    //   arrHandledRoutes.push({route: `/diseases/${record.EncodedName}/OtherNames/${record.EncodedAlias}`});
-    // });
+    for (let i = arrHandledRoutes.length; i <= 1000; i++) {
+        arrHandledRoutes.push({ route: `/filler/${i}` });
+    }
     return arrHandledRoutes;
 };
 const validator = async (conf) => [];
 scully_1.registerPlugin('router', 'diseaseIds', diseaseIdPlugin, validator);
-const diseaseAliasPlugin = async (route, options) => {
-    const arrHandledRoutes = Array();
-    ListOfDiseaseAlias.alias.forEach(record => {
-        arrHandledRoutes.push({ route: `/diseases/${record.EncodedName}/OtherNames/${record.EncodedAlias}` });
-    });
-    return arrHandledRoutes;
-};
-scully_1.registerPlugin('router', 'diseaseAlias', diseaseAliasPlugin);
 //# sourceMappingURL=data.plugin.js.map

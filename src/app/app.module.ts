@@ -24,6 +24,7 @@ import {DiseaseSubMenuComponent} from './components/disease-sub-menu/disease-sub
 import { MainTopMenuComponent } from './components/main-top-menu/main-top-menu.component';
 import { SearchBannerComponent } from './components/search-banner/search-banner.component';
 import { JsonLdComponent } from './components/json-ld/json-ld.component';
+import { FillerComponent } from './Pages/filler/filler.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { JsonLdComponent } from './components/json-ld/json-ld.component';
     MainTopMenuComponent,
     SearchBannerComponent,
     JsonLdComponent,
+    FillerComponent,
   ],
   imports: [
     BrowserModule,

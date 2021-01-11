@@ -16,6 +16,11 @@ export class DataService {
     this.diseaseRecords = ListOfDiseases.records;
   }
 
+  getRandomData(): Observable<any> {
+    const diseaseRecordFilter = this.diseaseRecords[Math.floor(Math.random() * this.diseaseRecords.length)];
+    return this.getFromRecord(diseaseRecordFilter);
+  }
+
   getBySlug(slug: string): Observable<any> {
     const diseaseRecordFilter = this.diseaseRecords.filter(disease => disease.EncodedName === slug);
     if (diseaseRecordFilter.length === 1) {

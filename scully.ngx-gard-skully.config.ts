@@ -13,8 +13,8 @@ export const config: ScullyConfig = {
     '/diseases/:id': {
       type: 'diseaseIds',
     },
-    '/diseases/:id/OtherNames/:alias': {
-      type: 'diseaseAlias',
+    '/filler/:id': {
+      type: 'diseaseIds',
     },
   },
   defaultPostRenderers: [getFlashPreventionPlugin()],

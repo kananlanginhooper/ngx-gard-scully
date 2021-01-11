@@ -1,0 +1,56 @@
+<app-json-ld UrlBase="diseases/" [UrlSecond]="this.diseaseSlug"></app-json-ld>
+<div class="row">
+  <div class="col-md-3">
+    <nav>
+      <app-disease-sub-menu></app-disease-sub-menu>
+    </nav>
+  </div>
+  <main role="main" *ngIf="data && data.mainPropery" class="col-md-9">
+    <div class="img200kb_0"></div>
+    <div class="img200kb_1"></div>
+    <div class="img200kb_2"></div>
+    <div class="img200kb_3"></div>
+    <div class="img200kb_4"></div>
+    <div class="img200kb_5"></div>
+    <div class="img200kb_6"></div>
+    <div class="img200kb_7"></div>
+    <div class="img200kb_8"></div>
+    <div class="img200kb_9"></div>
+    <div
+      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">FILLER -- {{data.mainPropery.diseaseName}}</h1>
+      <h3>Disease #{{data.mainPropery.diseaseId}}</h3>
+    </div>
+
+    <div>
+      <p><b>Other Names: </b>{{data.mainPropery.synonyms.join(', ')}}</p>
+      <p><b>Categories: </b> <span *ngFor="let sym of data.diseaseCategories"> {{sym.diseaseTypeName}}</span>
+      </p>
+      <p><b>This disease is grouped under: </b>{{data.relatedDiseases[0]?.relatedDiseaseName}}</p>
+      <p><b>Summary: </b>
+        <span [innerHTML]="data.overviewQuestion?.answerText"></span>
+      </p>
+
+      <div><b>Organizations: </b>
+        <ul>
+          <li *ngFor="let org of data.organizations">
+            <span><a href="org.url">{{org.resourceName}}</a></span><br>
+            <ng-container *ngIf="org.address1">
+              <span>{{org.address1}}</span><br>
+              <span>{{org.city}} {{org.state}}, {{org.zip}}</span><br>
+            </ng-container>
+          </li>
+        </ul>
+      </div>
+
+      <div><b>Learn More</b>
+        <ul>
+          <li *ngFor="let info of data['resource descriptions']">
+            <span [innerHTML]="info.descriptionText"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+</div>
