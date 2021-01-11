@@ -12,7 +12,7 @@ const diseaseIdPlugin = async (route: string, options): Promise<HandledRoute[]> 
       arrHandledRoutes.push({route: `/diseases/${record.EncodedName}`});
     });
 
-    for (let i = arrHandledRoutes.length; i <= 10000; i++) {
+    for (let i = arrHandledRoutes.length; i <= +process.env.PageCount; i++) {
       arrHandledRoutes.push({route: `/filler/${i}`});
     }
 

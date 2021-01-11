@@ -51,6 +51,7 @@ jobs:
           LegacyKey: ${{ secrets.LegacyKey }}
           AmplifyToken: ${{ secrets.AmplifyToken }}
           AmplifyId: ${{ secrets.AmplifyId }}
+          PageCount: 10000
           branch: master
           FetchAllData: true
           AlsoWriteLocalJSONFiles: true
