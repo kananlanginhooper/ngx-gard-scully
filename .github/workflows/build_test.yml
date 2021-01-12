@@ -49,7 +49,7 @@ jobs:
           client_secret: ${{ secrets.client_secret }}
           password: ${{ secrets.password }}
           LegacyKey: ${{ secrets.LegacyKey }}
-          PageCount: 250
+          PageCount: 100
           branch: test
           FetchAllData: false
           AlsoWriteLocalJSONFiles: true
