@@ -27,7 +27,7 @@ const diseaseIdPlugin = async (route, options) => {
     ListOfDiseases.records.forEach(record => {
         arrHandledRoutes.push({ route: `/diseases/${record.EncodedName}` });
     });
-    for (let i = arrHandledRoutes.length; i <= 1000; i++) {
+    for (let i = arrHandledRoutes.length; i <= +process.env.PageCount; i++) {
         arrHandledRoutes.push({ route: `/filler/${i}` });
     }
     return arrHandledRoutes;
