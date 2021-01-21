@@ -25,6 +25,7 @@ import { MainTopMenuComponent } from './components/main-top-menu/main-top-menu.c
 import { SearchBannerComponent } from './components/search-banner/search-banner.component';
 import { JsonLdComponent } from './components/json-ld/json-ld.component';
 import { FillerComponent } from './Pages/filler/filler.component';
+import { SafeHTMLPipe } from './pipes/safe-html.pipe';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { FillerComponent } from './Pages/filler/filler.component';
     SearchBannerComponent,
     JsonLdComponent,
     FillerComponent,
+    SafeHTMLPipe,
   ],
   imports: [
     BrowserModule,

@@ -24,34 +24,23 @@
 
     <div>
       <p><b>Other Names: </b>{{data.Synonyms_List__c}}</p>
-<!--      <p><b>Categories: </b> <span *ngFor="let sym of data.Disease_Categories__c"> {{sym}}</span>-->
-<!--      </p>-->
-<!--      <p><b>This disease is grouped under: </b>{{data.relatedDiseases[0]?.relatedDiseaseName}}</p>-->
+
       <p><b>Description: </b>
-        <span [innerHTML]="data.Disease_Description__c"></span>
+        <span>{{data.Disease_Description__c}}</span>
       </p>
-
-<!--      <div><b>Organizations: </b>-->
-<!--        <ul>-->
-<!--          <li *ngFor="let org of data.organizations">-->
-<!--            <span><a href="org.url">{{org.resourceName}}</a></span><br>-->
-<!--            <ng-container *ngIf="org.address1">-->
-<!--              <span>{{org.address1}}</span><br>-->
-<!--              <span>{{org.city}} {{org.state}}, {{org.zip}}</span><br>-->
-<!--            </ng-container>-->
-<!--          </li>-->
-<!--        </ul>-->
-<!--      </div>-->
-
-<!--      <div><b>Learn More</b>-->
-<!--        <ul>-->
-<!--          <li *ngFor="let info of data['resource descriptions']">-->
-<!--            <span [innerHTML]="info.descriptionText"></span>-->
-<!--          </li>-->
-<!--        </ul>-->
-<!--      </div>-->
-
     </div>
 
+    <div *ngIf="KB">
+      <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Knowledge Articles</h1>
+      </div>
+
+      <div *ngFor="let KBdata of KB">
+        <h3>{{KBdata.title}}</h3>
+        <p [innerHTML]="KBdata.summary | safeHTML"></p>
+      </div>
+    </div>
   </main>
+
 </div>

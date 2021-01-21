@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {take} from 'rxjs/operators';
 import {DataService} from '../../data.service';
 import {Title, Meta} from '@angular/platform-browser';
+import {SafeHTMLPipe} from '../../pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-disease-details',
@@ -13,6 +14,7 @@ import {Title, Meta} from '@angular/platform-browser';
 export class DiseaseDetailsComponent {
 
   data = null;
+  KB = null;
   diseaseSlug = '';
 
   constructor(
@@ -23,6 +25,11 @@ export class DiseaseDetailsComponent {
   ) {
     activatedRoute.params.subscribe(param => {
       this.diseaseSlug = param.id;
+      dataSrv.getKB(this.diseaseSlug).pipe(take(1)).subscribe(arrKB => {
+        debugger
+        this.KB = arrKB;
+      });
+
       dataSrv.getBySlug(this.diseaseSlug).pipe(take(1)).subscribe(diseaseDetail => {
         // console.log(`nav to:`, diseaseDetail.mainPropery.diseaseId);
         this.data = diseaseDetail;

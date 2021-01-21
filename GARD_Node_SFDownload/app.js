@@ -11,3 +11,7 @@ if (util.IsLegacyFetch()) {
   const SFFetch = require('./SF');
   SFFetch.RunFetch();
 }
+
+// Knowledge articles
+const KB = require('./KB');
+KB.RunFetch();

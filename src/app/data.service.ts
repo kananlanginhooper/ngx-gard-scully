@@ -5,20 +5,36 @@ import {Observable, of} from 'rxjs';
 // @ts-ignore
 import * as ListOfDiseases from '../assets/diseases.trimmed.json';
 
+// @ts-ignore
+import * as DiseasesKB from '../assets/diseases.KB.json';
+
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
 
   diseaseRecords = [];
+  diseaseKB = [];
 
   constructor(private client: HttpClient) {
     this.diseaseRecords = ListOfDiseases.records;
+    this.diseaseKB = DiseasesKB.records;
   }
 
   getRandomData(): Observable<any> {
     const diseaseRecordFilter = this.diseaseRecords[Math.floor(Math.random() * this.diseaseRecords.length)];
     return this.getFromRecord(diseaseRecordFilter);
+  }
+
+  getKB(slug: string): Observable<any> {
+    // const diseaseRecordFilter = this.diseaseRecords.filter(disease => disease.EncodedName === slug);
+    // if (diseaseRecordFilter.length === 1) {
+    //   return this.getFromRecord(diseaseRecordFilter[0]);
+    // } else {
+    //   // not found by slug, try ID method
+    //   return this.getById(slug);
+    // }
+    return of(this.diseaseKB);
   }
 
   getBySlug(slug: string): Observable<any> {
