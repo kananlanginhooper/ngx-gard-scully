@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 const util = require('./util');
-util.startingOutput();
+util.StartingOutput();
+util.CreateFolders();
 
 if (util.IsLegacyFetch()) {
   const LegacyFetch = require('./legacy');

@@ -4,7 +4,7 @@ import {take} from 'rxjs/operators';
 import {forkJoin} from 'rxjs';
 
 // @ts-ignore
-import * as ListOfDiseases from '../../../assets/diseases.legacy.trimmed.json';
+import * as ListOfDiseases from '../../../assets/diseases.trimmed.json';
 
 
 @Component({

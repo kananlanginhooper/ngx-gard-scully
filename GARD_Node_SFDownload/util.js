@@ -102,15 +102,19 @@ WriteLocalLog = (RecordCount) => {
 IsLegacyFetch = () => (FetchMethod === 'Legacy');
 
 
-startingOutput = () => {
+StartingOutput = () => {
   // Output settings so we can always be clear
   console.log("Fetching Data from:", IsLegacyFetch() ? 'Legacy' : 'Salesforce');
   console.log("FetchAllData:", FetchAllData);
   console.log("AlsoWriteLocalJSONFiles:", AlsoWriteLocalJSONFiles);
 }
 
+CreateFolders = () => {
+  fs.mkdir('singles', () => { console.log('Singles created.')})
+}
+
 module.exports = {
-  Encode, wait, UploadToS3, WriteLocalLog, startingOutput, s3,
+  Encode, wait, UploadToS3, WriteLocalLog, StartingOutput, CreateFolders, s3,
   IsLegacyFetch, FetchThreads, LogFileSave, FetchAllData, AlsoWriteLocalJSONFiles,
   LogFileName, S3Bucket, LegacyKey
 }
