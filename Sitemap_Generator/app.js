@@ -66,7 +66,7 @@ SiteMapData += '<?xml version="1.0" encoding="UTF-8"?>';
 SiteMapData += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
 { // Main Records
-  const MainDiseaseJsonFile = path.join('../', 'src/assets/', 'diseases.legacy.json');
+  const MainDiseaseJsonFile = path.join('../', 'src/assets/', 'diseases.json');
   const data = fs.readFileSync(MainDiseaseJsonFile, 'utf8');
   const json = JSON.parse(data);
 
