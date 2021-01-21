@@ -25,11 +25,11 @@ callback_auth = (response) => {
     const json = JSON.parse(str);
     JWT = json.access_token;
     console.log('JWT Fetched');
-    FetchDataForMainQuery(InitialMainDataQueryURI);
+    FetchDataForMainQuery_SF(InitialMainDataQueryURI);
   });
 }
 
-FetchDataForMainQuery = (DataURI) => {
+FetchDataForMainQuery_SF = (DataURI) => {
   console.log('Starting Main Data call:', DataURI);
   const options_data = {
     host: 'ncats--kbm.my.salesforce.com',
@@ -40,19 +40,19 @@ FetchDataForMainQuery = (DataURI) => {
       'Authorization': `Bearer ${JWT}`
     }
   };
-  const req_data = https.request(options_data, callback_main_query);
+  const req_data = https.request(options_data, callback_main_query_SF);
   req_data.on('error', function (error) {
     console.error('!!!');
     console.error(error);
     console.error('!!!');
     // retry
-    setTimeout(FetchDataForMainQuery.bind(null, DataURI), 5000);
+    setTimeout(FetchDataForMainQuery_SF.bind(null, DataURI), 5000);
 
   });
   req_data.end();
 }
 
-callback_main_query = (response) => {
+callback_main_query_SF = (response) => {
   let str = '';
 
   // another chunk of data has been received, so append it to `str`
@@ -69,7 +69,7 @@ callback_main_query = (response) => {
 
     if (util.FetchAllData && !json.done) {
       // Fetch more data from pagination
-      setTimeout(FetchDataForMainQuery.bind(null, json.nextRecordsUrl), 100);
+      setTimeout(FetchDataForMainQuery_SF.bind(null, json.nextRecordsUrl), 100);
     } else {
       // All data has been fetched, now process all in one batch
 
@@ -137,7 +137,7 @@ callback_main_query = (response) => {
         if (record === undefined) {
           console.error('Record doesnt contain .Name', record);
         } else {
-          await FetchDataForSecondaryAsync(record.DiseaseDetailURL)
+          await FetchDataForSecondaryAsync_SF(record.DiseaseDetailURL)
             .then(response => {
               // all good
             }).catch(e => {
@@ -149,7 +149,7 @@ callback_main_query = (response) => {
                 console.error('!!!');
 
                 // retry
-                FetchDataForSecondaryAsync(e.DataURI);
+                FetchDataForSecondaryAsync_SF(e.DataURI);
               } else if (e.ErrorReason && e.ErrorReason === 'S3') {
                 console.error('!!! S3 Error in callback_data_single:response.on.end');
                 console.error(e);
@@ -174,7 +174,7 @@ callback_main_query = (response) => {
   });
 }
 
-async function FetchDataForSecondaryAsync(DataURI) {
+async function FetchDataForSecondaryAsync_SF(DataURI) {
   return new Promise((resolve, reject) => {
     const options_data = {
       host: 'ncats--kbm.my.salesforce.com',
@@ -185,7 +185,7 @@ async function FetchDataForSecondaryAsync(DataURI) {
         'Authorization': `Bearer ${JWT}`
       }
     };
-    const req_data = https.request(options_data, callback_data_single.bind(null, resolve, reject));
+    const req_data = https.request(options_data, callback_data_single_SF.bind(null, resolve, reject));
     req_data.on('error', (error) => {
       reject({...error, ...{DataURI, ErrorReason: 'Network'}});
     });
@@ -194,7 +194,7 @@ async function FetchDataForSecondaryAsync(DataURI) {
   });
 }
 
-callback_data_single = (resolve, reject, response) => {
+callback_data_single_SF = (resolve, reject, response) => {
   let str = '';
 
   //another chunk of data has been received, so append it to `str`
