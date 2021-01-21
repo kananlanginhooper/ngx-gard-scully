@@ -20,4 +20,5 @@ export const config: ScullyConfig = {
   defaultPostRenderers: [getFlashPreventionPlugin()],
 };
 
+// puppeteerLaunchOptions: {executablePath: 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'},
 
