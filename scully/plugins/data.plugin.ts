@@ -1,10 +1,10 @@
 import {HandledRoute, registerPlugin} from '@scullyio/scully';
 
 // @ts-ignore
-import * as ListOfDiseases from '../../src/assets/diseases.legacy.json';
+import * as ListOfDiseases from '../../src/assets/diseases.json';
 
 // @ts-ignore
-import * as ListOfDiseaseAlias from '../../src/assets/diseases.legacy.alias.json';
+// import * as ListOfDiseaseAlias from '../../src/assets/diseases.legacy.alias.json';
 
 const diseaseIdPlugin = async (route: string, options): Promise<HandledRoute[]> => {
     const arrHandledRoutes = Array<HandledRoute>();

@@ -2,10 +2,10 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
 // @ts-ignore
-import * as ListOfDiseases from '../../../../src/assets/diseases.legacy.trimmed.json';
+import * as ListOfDiseases from '../../../../src/assets/diseases.trimmed.json';
 
-// @ts-ignore
-import * as ListOfDiseaseAlias from '../../../../src/assets/diseases.legacy.alias.json';
+// // @ts-ignore
+// import * as ListOfDiseaseAlias from '../../../../src/assets/diseases.legacy.alias.json';
 
 class DiseaseListing {
   Search: string;
@@ -64,11 +64,11 @@ export class SearchComponent {
       }
     });
 
-    ListOfDiseaseAlias.alias.forEach(diseaseAlias => {
-      if (diseaseAlias.alias.includes(SearchString)) {
-        this.results.push(new DiseaseListing(diseaseAlias.alias, diseaseAlias.EncodedName, diseaseAlias.EncodedAlias));
-      }
-    });
+    // ListOfDiseaseAlias.alias.forEach(diseaseAlias => {
+    //   if (diseaseAlias.alias.includes(SearchString)) {
+    //     this.results.push(new DiseaseListing(diseaseAlias.alias, diseaseAlias.EncodedName, diseaseAlias.EncodedAlias));
+    //   }
+    // });
 
   }
 

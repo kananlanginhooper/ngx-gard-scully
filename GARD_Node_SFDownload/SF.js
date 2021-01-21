@@ -114,8 +114,8 @@ callback_main_query = (response) => {
           'totalSize': MainDiseaseRecords.length,
           'records': MainDiseaseRecords.map(diseaseRecord => {
             return {
-              id: diseaseRecord.diseaseId,
-              name: diseaseRecord.diseaseName,
+              id: diseaseRecord.id,
+              name: diseaseRecord.name,
               EncodedName: diseaseRecord.EncodedName
             }
           })
@@ -210,7 +210,8 @@ callback_data_single = (resolve, reject, response) => {
         const DiseaseName = util.Encode(json.Name);
         json = {...json, ...{EncodedName: DiseaseName}};
         const updatedSourceString = JSON.stringify(json);
-        const KeyName = `singles/${json.DiseaseID__c}.json`;
+        // const DiseaseKeyName = json.DiseaseID__c.replace(':','|');
+        const KeyName = `singles/${DiseaseName}.json`;
 
         util.UploadToS3(KeyName, str
           , () => {

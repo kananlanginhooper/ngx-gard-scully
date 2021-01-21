@@ -2,7 +2,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {take} from 'rxjs/operators';
 import {DataService} from '../../data.service';
-import { Title, Meta } from '@angular/platform-browser';
+import {Title, Meta} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-disease-details',
@@ -12,7 +12,7 @@ import { Title, Meta } from '@angular/platform-browser';
 })
 export class DiseaseDetailsComponent {
 
-  data = {mainPropery: null};
+  data = null;
   diseaseSlug = '';
 
   constructor(
@@ -28,32 +28,34 @@ export class DiseaseDetailsComponent {
         this.data = diseaseDetail;
 
         // Website Title
-        this.title.setTitle(diseaseDetail.mainPropery.diseaseName);
+        this.title.setTitle(diseaseDetail.GARD_Name__c);
 
         // Keywords
         const arrKeywords = [];
-        arrKeywords.push(diseaseDetail.mainPropery.diseaseName);
-        arrKeywords.push(diseaseDetail.mainPropery.synonyms);
+        arrKeywords.push(diseaseDetail.GARD_Name__c);
+        arrKeywords.push(diseaseDetail.Synonyms_List__c.split(', '));
 
         // Description
         let description = '';
-        description += `${diseaseDetail.mainPropery.diseaseName} is a `;
+        description += `${diseaseDetail.GARD_Name__c} is a `;
 
-        if (diseaseDetail.mainPropery.isRare) {
+        if (diseaseDetail.Disease_Type__c === 'Rare') {
           description += `rare `;
-        }else{
+        } else {
           description += `genetic `;
         }
         description += `disease that is also know by the following names: `;
-        description += `${diseaseDetail.mainPropery.synonyms.join(', ')}. `;
+        description += `${diseaseDetail.Synonyms_List__c}. `;
 
-        description += `${diseaseDetail.mainPropery.diseaseName} is in the categories of: `;
-        description += `${diseaseDetail.diseaseCategories.map(cat => cat.diseaseTypeName).join(', ')}. `;
+        description += `${diseaseDetail.GARD_Name__c} is in the categories of: `;
+
+        // Disease_Categories__c
+        // description += `${diseaseDetail.diseaseCategories.map(cat => cat.diseaseTypeName).join(', ')}. `;
 
         this.meta.addTags([
           {name: 'keywords', content: arrKeywords.join(', ')},
           {name: 'description', content: description},
-          {name: 'robots', content: 'index, follow'}
+          // {name: 'robots', content: 'index, follow'}
         ]);
       });
     });

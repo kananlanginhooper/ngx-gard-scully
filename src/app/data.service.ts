@@ -38,7 +38,7 @@ export class DataService {
 
   getFromRecord(diseaseRecord: object | any): Observable<any> {
     if (diseaseRecord.detail === undefined) {
-      const obs = this.client.get<any>(`/assets/singles/${diseaseRecord.id.toString()}.json`);
+      const obs = this.client.get<any>(`/assets/singles/${diseaseRecord.EncodedName}.json`);
       obs.subscribe(detail => {
         diseaseRecord.detail = detail;
       });

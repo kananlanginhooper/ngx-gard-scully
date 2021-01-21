@@ -5,7 +5,7 @@
       <app-disease-sub-menu></app-disease-sub-menu>
     </nav>
   </div>
-  <main role="main" *ngIf="data && data.mainPropery" class="col-md-9">
+  <main role="main" *ngIf="data" class="col-md-9">
     <div class="img200kb_0"></div>
     <div class="img200kb_1"></div>
     <div class="img200kb_2"></div>
@@ -18,38 +18,39 @@
     <div class="img200kb_9"></div>
     <div
       class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-      <h1 class="h2">{{data.mainPropery.diseaseName}}</h1>
-      <h3>Disease #{{data.mainPropery.diseaseId}}</h3>
+      <h1 class="h2">{{data.GARD_Name__c}}</h1>
+      <h3>Disease #{{data.DiseaseID__c}}</h3>
     </div>
 
     <div>
-      <p><b>Other Names: </b>{{data.mainPropery.synonyms.join(', ')}}</p>
-      <p><b>Categories: </b> <span *ngFor="let sym of data.diseaseCategories"> {{sym.diseaseTypeName}}</span>
-      </p>
-      <p><b>This disease is grouped under: </b>{{data.relatedDiseases[0]?.relatedDiseaseName}}</p>
-      <p><b>Summary: </b>
-        <span [innerHTML]="data.overviewQuestion?.answerText"></span>
+      <p><b>Other Names: </b>{{data.Synonyms_List__c}}</p>
+<!--      <p><b>Categories: </b> <span *ngFor="let sym of data.Disease_Categories__c"> {{sym}}</span>-->
+<!--      </p>-->
+<!--      <p><b>This disease is grouped under: </b>{{data.relatedDiseases[0]?.relatedDiseaseName}}</p>-->
+      <p><b>Description: </b>
+        <span [innerHTML]="data.Disease_Description__c"></span>
       </p>
 
-      <div><b>Organizations: </b>
-        <ul>
-          <li *ngFor="let org of data.organizations">
-            <span><a href="org.url">{{org.resourceName}}</a></span><br>
-            <ng-container *ngIf="org.address1">
-              <span>{{org.address1}}</span><br>
-              <span>{{org.city}} {{org.state}}, {{org.zip}}</span><br>
-            </ng-container>
-          </li>
-        </ul>
-      </div>
+<!--      <div><b>Organizations: </b>-->
+<!--        <ul>-->
+<!--          <li *ngFor="let org of data.organizations">-->
+<!--            <span><a href="org.url">{{org.resourceName}}</a></span><br>-->
+<!--            <ng-container *ngIf="org.address1">-->
+<!--              <span>{{org.address1}}</span><br>-->
+<!--              <span>{{org.city}} {{org.state}}, {{org.zip}}</span><br>-->
+<!--            </ng-container>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
 
-      <div><b>Learn More</b>
-        <ul>
-          <li *ngFor="let info of data['resource descriptions']">
-            <span [innerHTML]="info.descriptionText"></span>
-          </li>
-        </ul>
-      </div>
+<!--      <div><b>Learn More</b>-->
+<!--        <ul>-->
+<!--          <li *ngFor="let info of data['resource descriptions']">-->
+<!--            <span [innerHTML]="info.descriptionText"></span>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
+
     </div>
 
   </main>
