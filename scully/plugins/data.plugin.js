@@ -21,7 +21,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const scully_1 = require("@scullyio/scully");
 // @ts-ignore
-const ListOfDiseases = __importStar(require("../../src/assets/diseases.legacy.json"));
+const ListOfDiseases = __importStar(require("../../src/assets/diseases.trimmed.json"));
+// @ts-ignore
+// import * as ListOfDiseaseAlias from '../../src/assets/diseases.legacy.alias.json';
 const diseaseIdPlugin = async (route, options) => {
     const arrHandledRoutes = Array();
     ListOfDiseases.records.forEach(record => {

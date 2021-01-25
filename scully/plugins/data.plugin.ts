@@ -1,7 +1,7 @@
 import {HandledRoute, registerPlugin} from '@scullyio/scully';
 
 // @ts-ignore
-import * as ListOfDiseases from '../../src/assets/diseases.json';
+import * as ListOfDiseases from '../../src/assets/diseases.trimmed.json';
 
 // @ts-ignore
 // import * as ListOfDiseaseAlias from '../../src/assets/diseases.legacy.alias.json';
