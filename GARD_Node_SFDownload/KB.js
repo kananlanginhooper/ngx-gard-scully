@@ -1,6 +1,7 @@
 const https = require('https');
 const FormData = require('form-data');
-const util = require('./util');
+const ServerUtil = require('./ServerUtil');
+const util = require('../SharedClasses/util');
 const async = require("async");
 
 let JWT = null;
@@ -67,7 +68,7 @@ callback_main_query = (response) => {
     // Save data to MainDiseaseRecords
     RawKBRecords = RawKBRecords.concat(json.searchRecords);
 
-    if (util.FetchAllData && !json.done) {
+    if (ServerUtil.FetchAllData && !json.done) {
       // Fetch more data from pagination
       setTimeout(FetchDataForMainQuery.bind(null, json.nextRecordsUrl), 100);
     } else {
@@ -92,7 +93,7 @@ callback_main_query = (response) => {
       });
 
       const KeyName = 'diseases.KB.json';
-      util.UploadToS3(KeyName, TextDataForDiseasesJson
+      ServerUtil.UploadToS3(KeyName, TextDataForDiseasesJson
         , () => {
           console.error('!!! Error Writing diseases.KB.json to S3');
         }

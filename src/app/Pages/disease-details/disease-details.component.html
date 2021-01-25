@@ -28,6 +28,91 @@
       <p><b>Description: </b>
         <span>{{data.Disease_Description__c}}</span>
       </p>
+
+      <p><b>Synonyms: </b>
+        <span>{{data.Synonyms_List__c}}</span>
+      </p>
+
+      <p><b>Disease Type: </b>
+        <span>{{data.Disease_Type__c}}</span>
+      </p>
+
+      <p><b>Data Category: </b>
+        <span>{{data.Data_Category__c}}</span>
+      </p>
+
+      <div class="topSpace"><b>External Identifiers: </b>
+        <p class="indent" *ngFor="let exID of data.External_Identifier_Disease__c">
+          <span>{{exID.source}}: {{exID.value}}</span>
+        </p>
+      </div>
+
+      <div class="topSpace"><b>Disease Gene: </b>
+        <div class="indent" *ngFor="let gene of data.GARD_Disease_Gene__c">
+          <p><b>{{gene.Gene_Symbol}}</b></p>
+          <p class="indent">Gene ID: {{gene.GeneId}}</p>
+          <p class="indent">Gene Name: {{gene.GeneName}}</p>
+          <p class="indent">Gene Association: {{gene.DzGeneAssociation}}</p>
+          <p class="indent">Source: {{gene.DzGeneAssociation_AttributionSource}}</p>
+        </div>
+      </div>
+
+      <div class="topSpace"><b>Age At Onset: </b>
+        <ul *ngFor="let age of data.Age_At_Onset__c">
+          <li>{{age.value}}</li>
+        </ul>
+      </div>
+
+      <div class="topSpace"><b>Age At Death: </b>
+        <ul *ngFor="let age of data.Age_At_Death__c">
+          <li>{{age.value}}</li>
+        </ul>
+      </div>
+
+      <div class="topSpace"><b>Evidence: </b>
+        <div class="indent"  *ngFor="let evidence of data.Evidence__c">
+          <p>Type: {{evidence.type}}</p>
+          <p>Label: {{evidence.label}}</p>
+          <p>Url: <a href="evidence.url">{{evidence.url}}</a></p>
+        </div>
+      </div>
+
+      <div class="topSpace"><b>Epidemiology: </b>
+        <div class="indent" *ngFor="let epidemiology of data.Epidemiology__c">
+          <p><b>{{epidemiology.type}}</b></p>
+          <p class="indent">Validation: {{epidemiology.validation}}</p>
+          <p class="indent">Value: {{epidemiology.value}}</p>
+          <p class="indent">Qualification: {{epidemiology.qualification}}</p>
+          <p class="indent">Range: {{epidemiology.range}}</p>
+          <p class="indent">Location: {{epidemiology.location}}</p>
+          <p class="indent">Source: {{epidemiology.source}}</p>
+        </div>
+      </div>
+
+      <div class="topSpace"><b>Disease Synonym: </b>
+        <ul *ngFor="let disease of data.Disease_Synonym__c">
+          <li>{{disease}}</li>
+        </ul>
+      </div>
+
+      <div class="topSpace"><b>Inheritance: </b>
+        <ul *ngFor="let inheritance of data.Inheritance__c">
+          <li>{{inheritance}}</li>
+        </ul>
+      </div>
+
+      <div class="topSpace"><b>Disease Feature: </b>
+        <div class="indent" *ngFor="let feature of data.GARD_Disease_Feature__c">
+          <p><b>{{feature.NameMaping}}</b></p>
+          <p class="indent">Category: {{feature.Category}}</p>
+          <p class="indent">Frequency: {{feature.Frequency}}</p>
+          <p class="indent">Description: {{feature.Description}}</p>
+          <p class="indent">Method: {{feature.Method}}</p>
+          <p class="indent">SourceCurie: {{feature.SourceCurie}}</p>
+          <p class="indent">NameMap: {{feature.NameMap}}</p>
+        </div>
+      </div>
+
     </div>
 
     <div *ngIf="KB">

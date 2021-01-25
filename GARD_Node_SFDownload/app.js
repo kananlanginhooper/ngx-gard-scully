@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
-const util = require('./util');
-util.StartingOutput();
-util.CreateFolders();
+require('dotenv').config()
+const util = require('../SharedClasses/util');
+const ServerUtil = require('./ServerUtil');
 
-if (util.IsLegacyFetch()) {
+ServerUtil.StartingOutput();
+ServerUtil.CreateFolders();
+
+if (ServerUtil.IsLegacyFetch()) {
   const LegacyFetch = require('./legacy');
   LegacyFetch.RunFetch();
 } else {

@@ -1,4 +1,3 @@
-require('dotenv').config();
 const execStart = new Date()
 const fs = require('fs');
 const https = require('https');
@@ -30,31 +29,6 @@ const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 // setup for modern SSL
 https.globalAgent.options.secureProtocol = 'TLSv1_2_method';
-
-
-function Encode(str) {
-  if (str === undefined) {
-    return '';
-  } else {
-    const Encode1 = encodeURI(str.replace(/ /g, '_').replace(/:/g, '_').replace(/\//g, '_'));
-
-    if (Encode1 === undefined) {
-      console.error('!!! Encode - Undefined');
-      return '';
-    } else if (!Encode1) {
-      console.error('!!! Encode - == false');
-      return '';
-    } else {
-      return Encode1.replace('%E2%80%93', '');
-    }
-  }
-}
-
-async function wait(DelayInMs) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(), DelayInMs)
-  })
-}
 
 function UploadToS3(FileNameAKAKey, FileContentOrStream, Error, Success) {
   const uploadParams = {
@@ -88,15 +62,8 @@ function UploadToS3(FileNameAKAKey, FileContentOrStream, Error, Success) {
   }
 }
 
-WriteLocalLog = (RecordCount) => {
-  const json = {RecordCount, execTimeMs: new Date() - execStart};
-  fs.writeFile(LogFileName, JSON.stringify(json), (err) => {
-    if (err) {
-      throw err;
-    } else {
-      console.log(LogFileName, 'has been saved locally!');
-    }
-  });
+CreateFolders = () => {
+  fs.mkdir('singles', () => { console.log('Singles created.')})
 }
 
 IsLegacyFetch = () => (FetchMethod === 'Legacy');
@@ -109,12 +76,18 @@ StartingOutput = () => {
   console.log("AlsoWriteLocalJSONFiles:", AlsoWriteLocalJSONFiles);
 }
 
-CreateFolders = () => {
-  fs.mkdir('singles', () => { console.log('Singles created.')})
+WriteLocalLog = (RecordCount) => {
+  const json = {RecordCount, execTimeMs: new Date() - execStart};
+  fs.writeFile(LogFileName, JSON.stringify(json), (err) => {
+    if (err) {
+      throw err;
+    } else {
+      console.log(LogFileName, 'has been saved locally!');
+    }
+  });
 }
 
 module.exports = {
-  Encode, wait, UploadToS3, WriteLocalLog, StartingOutput, CreateFolders, s3,
-  IsLegacyFetch, FetchThreads, LogFileSave, FetchAllData, AlsoWriteLocalJSONFiles,
-  LogFileName, S3Bucket, LegacyKey
+  UploadToS3, CreateFolders, s3, FetchThreads, LogFileSave, FetchAllData, AlsoWriteLocalJSONFiles,
+  LogFileName, S3Bucket, LegacyKey, IsLegacyFetch, StartingOutput, WriteLocalLog
 }

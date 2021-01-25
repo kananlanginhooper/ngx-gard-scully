@@ -26,13 +26,14 @@ export class DiseaseDetailsComponent {
     activatedRoute.params.subscribe(param => {
       this.diseaseSlug = param.id;
       dataSrv.getKB(this.diseaseSlug).pipe(take(1)).subscribe(arrKB => {
-        debugger
         this.KB = arrKB;
       });
 
       dataSrv.getBySlug(this.diseaseSlug).pipe(take(1)).subscribe(diseaseDetail => {
         // console.log(`nav to:`, diseaseDetail.mainPropery.diseaseId);
         this.data = diseaseDetail;
+
+        debugger
 
         // Website Title
         this.title.setTitle(diseaseDetail.GARD_Name__c);

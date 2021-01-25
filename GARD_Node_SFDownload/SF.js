@@ -1,7 +1,11 @@
 const https = require('https');
 const FormData = require('form-data');
-const util = require('./util');
+const util = require('../SharedClasses/util');
+const ServerUtil = require('./ServerUtil');
 const async = require("async");
+const DiseaseAttributes = require("../SharedClasses/DiseaseAttributes");
+
+const diseaseAttributes = new DiseaseAttributes.DiseaseAttributes();
 
 let JWT = null;
 const InitialMainDataQueryURI = encodeURI('/services/data/v49.0/query/?q=select Name, Disease_Name_Full__c,DiseaseID__c from GARD_Disease__c');
@@ -67,7 +71,7 @@ callback_main_query_SF = (response) => {
     // Save data to MainDiseaseRecords
     RawDiseaseRecords = RawDiseaseRecords.concat(json.records);
 
-    if (util.FetchAllData && !json.done) {
+    if (ServerUtil.FetchAllData && !json.done) {
       // Fetch more data from pagination
       setTimeout(FetchDataForMainQuery_SF.bind(null, json.nextRecordsUrl), 100);
     } else {
@@ -97,7 +101,7 @@ callback_main_query_SF = (response) => {
       });
 
       const KeyName = 'diseases.json';
-      util.UploadToS3(KeyName, TextDataForDiseasesJson
+      ServerUtil.UploadToS3(KeyName, TextDataForDiseasesJson
         , () => {
           console.error('!!! Error Writing main diseases.json to S3');
         }
@@ -121,7 +125,7 @@ callback_main_query_SF = (response) => {
           })
         });
 
-        util.UploadToS3(KeyNameTrimmed, TextDataForTrimmedDiseasesJson
+        ServerUtil.UploadToS3(KeyNameTrimmed, TextDataForTrimmedDiseasesJson
           , () => {
             console.error(`!!! Error Writing ${KeyNameTrimmed} to S3`);
           }
@@ -133,39 +137,71 @@ callback_main_query_SF = (response) => {
 
       // after all processing on diseases.json is done...
       // Make secondary calls for each disease
-      async.mapLimit(MainDiseaseRecords, util.FetchThreads, async record => {
+      async.mapLimit(MainDiseaseRecords, ServerUtil.FetchThreads, async record => {
         if (record === undefined) {
           console.error('Record doesnt contain .Name', record);
         } else {
-          await FetchDataForSecondaryAsync_SF(record.DiseaseDetailURL)
-            .then(response => {
-              // all good
-            }).catch(e => {
-              // not so good
-              if (e.ErrorReason && e.ErrorReason === 'Network') {
-                // need to reprocess
-                console.error('!!! Error in FetchDataForSecondary. Retry Now.',);
-                console.error(e);
-                console.error('!!!');
 
-                // retry
-                FetchDataForSecondaryAsync_SF(e.DataURI);
-              } else if (e.ErrorReason && e.ErrorReason === 'S3') {
-                console.error('!!! S3 Error in callback_data_single:response.on.end');
-                console.error(e);
-                console.error('!!!');
-              } else {
-                console.error(e);
-              }
+          { // Fetch Disease Detail Linked URL
+            await FetchDataForSecondaryAsync_SF(record.DiseaseDetailURL)
+              .then(response => {
+                // all good
+              }).catch(e => {
+                // not so good
+                if (e.ErrorReason && e.ErrorReason === 'Network') {
+                  // need to reprocess
+                  console.error('!!! Error in FetchDataForSecondary. Retry Now.',);
+                  console.error(e);
+                  console.error('!!!');
 
-            });
+                  // retry
+                  FetchDataForSecondaryAsync_SF(e.DataURI);
+                } else if (e.ErrorReason && e.ErrorReason === 'S3') {
+                  console.error('!!! S3 Error in callback_data_single:response.on.end');
+                  console.error(e);
+                  console.error('!!!');
+                } else {
+                  console.error(e);
+                }
+
+              });
+          }
+
+          { // All other Attributes linked to this Disease
+            const GARD_DiseaseID = record.id;
+            if (GARD_DiseaseID) {
+              const url = encodeURI(`/services/apexrest/IntegrationServiceApi?term=${GARD_DiseaseID}`);
+              await FetchAllOtherAttributesLinkedToThisDisease_SF(url)
+                .then(response => {
+                  // all good
+                }).catch(e => {
+                  // not so good
+                  if (e.ErrorReason && e.ErrorReason === 'Network') {
+                    // need to reprocess
+                    console.error('!!! Error in FetchDataForSecondary. Retry Now.',);
+                    console.error(e);
+                    console.error('!!!');
+
+                    // retry
+                    FetchAllOtherAttributesLinkedToThisDisease_SF(e.DataURI);
+                  } else if (e.ErrorReason && e.ErrorReason === 'S3') {
+                    console.error('!!! S3 Error in callback_data_single:response.on.end');
+                    console.error(e);
+                    console.error('!!!');
+                  } else {
+                    console.error(e);
+                  }
+                });
+            }
+          }
+
         }
       }, (err, results) => {
         if (err) {
           console.error('Running Secondary Fetch, error:', err);
         } else {
           console.log('Secondary Fetch Complete', results.length, 'records');
-          util.WriteLocalLog(results.length);
+          ServerUtil.WriteLocalLog(results.length);
         }
       });
 
@@ -207,20 +243,10 @@ callback_data_single_SF = (resolve, reject, response) => {
     if (str && str.length) {
       try {
         let json = JSON.parse(str);
-        const DiseaseName = util.Encode(json.Name);
-        json = {...json, ...{EncodedName: DiseaseName}};
-        const updatedSourceString = JSON.stringify(json);
-        // const DiseaseKeyName = json.DiseaseID__c.replace(':','|');
-        const KeyName = `singles/${DiseaseName}.json`;
-
-        util.UploadToS3(KeyName, str
-          , () => {
-            console.error('!!! Error Writing to S3', KeyName);
-          }
-          , () => {
-            // console.log('Success for', KeyName);
-          }
-        );
+        const DiseaseID = json.DiseaseID__c;
+        diseaseAttributes.AddFromDiseaseDetailFormat(json);
+        const updatedSourceString = diseaseAttributes.GetDiseaseJsonString(DiseaseID);
+        SaveDisease(DiseaseID, updatedSourceString);
       } catch (e) {
         reject({...e, ...{ErrorReason: 'S3'}});
       }
@@ -228,6 +254,66 @@ callback_data_single_SF = (resolve, reject, response) => {
     resolve();
   });
 }
+
+async function FetchAllOtherAttributesLinkedToThisDisease_SF(DataURI) {
+  return new Promise((resolve, reject) => {
+    const options_data = {
+      host: 'ncats--kbm.my.salesforce.com',
+      path: DataURI,
+      method: 'GET',
+      timeout: 5000,
+      headers: {
+        'Authorization': `Bearer ${JWT}`
+      }
+    };
+    const req_data = https.request(options_data, callback_FetchAllOtherAttributesLinkedToThisDisease_SF.bind(null, resolve, reject));
+    req_data.on('error', (error) => {
+      reject({...error, ...{DataURI, ErrorReason: 'Network'}});
+    });
+
+    req_data.end();
+  });
+}
+
+callback_FetchAllOtherAttributesLinkedToThisDisease_SF = (resolve, reject, response) => {
+  let str = '';
+
+  //another chunk of data has been received, so append it to `str`
+  response.on('data', function (chunk) {
+    str += chunk;
+  });
+
+  //the whole response has been received, so we just print it out here
+  response.on('end', function () {
+    if (str && str.length) {
+      try {
+        let json = JSON.parse(str);
+        const DiseaseID = diseaseAttributes.AddFromAttributeListFormat(json);
+        const updatedSourceString = diseaseAttributes.GetDiseaseJsonString(DiseaseID);
+        SaveDisease(DiseaseID, updatedSourceString);
+      } catch (e) {
+        reject({...e, ...{ErrorReason: 'S3'}});
+      }
+    }
+    resolve();
+  });
+}
+
+SaveDisease = (DiseaseString, strJson) => {
+  const arr = DiseaseString.split(':');
+  const DiseaseID = arr[1];
+  const KeyName = `singles/${DiseaseID}.json`;
+
+  ServerUtil.UploadToS3(KeyName, strJson
+    , () => {
+      console.error('!!! Error Writing to S3', KeyName);
+    }
+    , () => {
+      // console.log('Success for', KeyName);
+    }
+  );
+}
+
 
 RunFetch = () => {
 

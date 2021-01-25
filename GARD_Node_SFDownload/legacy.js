@@ -1,5 +1,5 @@
 const https = require('https');
-const util = require('./util');
+const util = require('../SharedClasses/util');
 const fs = require("fs");
 const async = require("async");
 
