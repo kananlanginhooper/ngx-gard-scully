@@ -73,7 +73,7 @@
         <div class="indent"  *ngFor="let evidence of data.Evidence__c">
           <p>Type: {{evidence.type}}</p>
           <p>Label: {{evidence.label}}</p>
-          <p>Url: <a href="evidence.url">{{evidence.url}}</a></p>
+          <p>Url: <a [href]="evidence.url">{{evidence.url}}</a></p>
         </div>
       </div>
 
